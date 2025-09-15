@@ -16,6 +16,7 @@ namespace IT
 {
     public partial class MainForm : RibbonForm
     {
+        #region Variaveis
         private NameValueCollection AppSettings = ConfigurationManager.AppSettings;
 
         private string NomeDominio = ConfigurationManager.AppSettings["NomeDominio"];
@@ -29,6 +30,13 @@ namespace IT
         private List<string> ServidorGateway = new List<string>();
 
         private string Estilo;
+
+        private double TotalRAM = 0;
+        private int RAMUso = 0;
+
+        private double TotalDisco = 0;
+        private int DiscoUso = 0;
+        #endregion
 
         public MainForm()
         {
@@ -71,6 +79,166 @@ namespace IT
                 : new List<string>();
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            // Nome do PC
+            txNomePC.Text = Environment.MachineName;
+
+            // Informação do Processador
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Name FROM Win32_Processor"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        txProcessador.Text = obj["Name"]?.ToString();
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                txProcessador.Text = "N/A";
+            }
+
+            // Total de RAM Instalada
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        if (obj["TotalPhysicalMemory"] != null)
+                        {
+                            double ramBytes = Convert.ToDouble(obj["TotalPhysicalMemory"]);
+                            TotalRAM = Math.Round(ramBytes / (1024 * 1024 * 1024));
+                            txMemoriaRAM.Text = $"{TotalRAM} GB";
+                        }
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                txMemoriaRAM.Text = "N/A";
+            }
+
+            // Edição e Versão do Windows
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption, Version FROM Win32_OperatingSystem"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        txWINEdicao.Text = obj["Caption"]?.ToString();
+                        txWINVersao.Text = obj["Version"]?.ToString();
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                txWINEdicao.Text = "N/A";
+                txWINVersao.Text = "N/A";
+            }
+
+            // RAM em uso
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT TotalVisibleMemorySize, FreePhysicalMemory FROM Win32_OperatingSystem"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        if (obj["TotalVisibleMemorySize"] != null && obj["FreePhysicalMemory"] != null)
+                        {
+                            ulong totalMemory = Convert.ToUInt64(obj["TotalVisibleMemorySize"]); // in KB
+                            ulong freeMemory = Convert.ToUInt64(obj["FreePhysicalMemory"]); // in KB
+                            ulong usedMemory = totalMemory - freeMemory;
+                            RAMUso = (int)((usedMemory * 100) / totalMemory);
+                        }
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                RAMUso = 0;
+            }
+
+            ponteiroRAMClaro.Value = RAMUso;
+            ponteiroRAMEscuro.Value = RAMUso;
+
+            // Informações do Disco C:
+            try
+            {
+                DriveInfo cDrive = new DriveInfo("C");
+                if (cDrive.IsReady)
+                {
+                    TotalDisco = Math.Round((double)cDrive.TotalSize / (1024 * 1024 * 1024));
+                    double freeSpace = cDrive.AvailableFreeSpace;
+                    double usedSpace = cDrive.TotalSize - freeSpace;
+                    DiscoUso = (int)(usedSpace * 100 / cDrive.TotalSize);
+                }
+            }
+            catch (Exception)
+            {
+                DiscoUso = 0;
+            }
+
+            ponteiroDiscoClaro.Value = DiscoUso;
+            ponteiroDiscoEscuro.Value = DiscoUso;
+        }
+
+        private void btDashBoardRefresh_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            // RAM em uso
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT TotalVisibleMemorySize, FreePhysicalMemory FROM Win32_OperatingSystem"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        if (obj["TotalVisibleMemorySize"] != null && obj["FreePhysicalMemory"] != null)
+                        {
+                            ulong totalMemory = Convert.ToUInt64(obj["TotalVisibleMemorySize"]); // in KB
+                            ulong freeMemory = Convert.ToUInt64(obj["FreePhysicalMemory"]); // in KB
+                            ulong usedMemory = totalMemory - freeMemory;
+                            RAMUso = (int)((usedMemory * 100) / totalMemory);
+                        }
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                RAMUso = 0;
+            }
+
+            ponteiroRAMClaro.Value = RAMUso;
+            ponteiroRAMEscuro.Value = RAMUso;
+
+            // Informações do Disco C:
+            try
+            {
+                DriveInfo cDrive = new DriveInfo("C");
+                if (cDrive.IsReady)
+                {
+                    TotalDisco = Math.Round((double)cDrive.TotalSize / (1024 * 1024 * 1024));
+                    double freeSpace = cDrive.AvailableFreeSpace;
+                    double usedSpace = cDrive.TotalSize - freeSpace;
+                    DiscoUso = (int)(usedSpace * 100 / cDrive.TotalSize);
+                }
+            }
+            catch (Exception)
+            {
+                DiscoUso = 0;
+            }
+
+            ponteiroDiscoClaro.Value = DiscoUso;
+            ponteiroDiscoEscuro.Value = DiscoUso;
+        }
+
+        #region Domínio
         private void btDominio_Teste_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             try
@@ -180,7 +348,9 @@ namespace IT
                 }
             }
         }
+        #endregion
 
+        #region Windows
         private void btWindows_Teste_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             List<string> options = new List<string> { "Limpeza de arquivos temporários", "Verificação de Discos" };
@@ -387,7 +557,9 @@ namespace IT
                 RunCommandAsAdmin(command, successMessage, errorMessage);
             }
         }
+        #endregion
 
+        #region Utilizador
         private void btUtilizador_Teste_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             List<string> options = new List<string>
@@ -489,7 +661,9 @@ namespace IT
                 }
             }
         }
+        #endregion
 
+        #region Rede
         private void btRede_Teste_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             List<string> options = new List<string>
@@ -584,7 +758,9 @@ namespace IT
                 RunCommandAsAdmin(command, successMessage, errorMessage);
             }
         }
+        #endregion
 
+        #region Funções Comuns
         private void RunCommandAsAdmin(string command, string successMessage, string errorMessage)
         {
             try
@@ -695,21 +871,38 @@ namespace IT
                 return prompt.ShowDialog() == DialogResult.OK ? comboBox.SelectedItem.ToString() : string.Empty;
             }
         }
+        #endregion
 
+        #region Estilo
         private void ckEstilo_CheckedChanged(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             if (ckEstilo.Checked)
             {
                 Estilo = "Escuro";
                 DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("WXI", "Darkness");
+                panelInfoPC.LookAndFeel.SetSkinStyle("WXI", "Darkness");
+                panelInfoRAM.LookAndFeel.SetSkinStyle("WXI", "Darkness");
+                gaugeControlRAMClaro.Visible = false;
+                gaugeControlRAMEscuro.Visible = true;
+                panelInfoDisco.LookAndFeel.SetSkinStyle("WXI", "Darkness");
+                gaugeControlDiscoClaro.Visible = false;
+                gaugeControlDiscoEscuro.Visible = true;
                 this.BackgroundImage = Image.FromFile(@"Imgs\FundoEscuro.png");
             }
             else
             {
                 Estilo = "Claro";
                 DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("WXI", "Clearness");
+                panelInfoPC.LookAndFeel.SetSkinStyle("WXI", "Clearness");
+                panelInfoRAM.LookAndFeel.SetSkinStyle("WXI", "Clearness");
+                gaugeControlRAMClaro.Visible = true;
+                gaugeControlRAMEscuro.Visible = false;
+                panelInfoDisco.LookAndFeel.SetSkinStyle("WXI", "Clearness");
+                gaugeControlDiscoClaro.Visible = true;
+                gaugeControlDiscoEscuro.Visible = false;
                 this.BackgroundImage = Image.FromFile(@"Imgs\FundoClaro.png");
             }
         }
+        #endregion
     }
 }
