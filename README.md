@@ -1,3 +1,4 @@
+<img width="780" height="505" alt="image" src="https://github.com/user-attachments/assets/266211cd-1087-42ef-bfb8-1d7dc36b0182" />
 # 🖥️ Utilitário de Suporte Windows (AD/NTP/Manutenção)
 
 ## 📌 Visão geral
