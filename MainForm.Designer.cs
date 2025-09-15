@@ -29,6 +29,24 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip3 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem3 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip4 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem4 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip5 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem5 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip6 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem6 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip7 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem7 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip8 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem8 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip9 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem9 = new DevExpress.Utils.ToolTipItem();
             ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
             btDominio_Teste = new DevExpress.XtraBars.BarButtonItem();
             btWindows_Teste = new DevExpress.XtraBars.BarButtonItem();
@@ -85,6 +103,9 @@
             btDominio_Teste.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btDominio_Teste.ImageOptions.SvgImage");
             btDominio_Teste.Name = "btDominio_Teste";
             btDominio_Teste.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            toolTipItem1.Text = "Aqui verifica se o PC está no Dominio e caso não esteja adiciona-o.";
+            superToolTip1.Items.Add(toolTipItem1);
+            btDominio_Teste.SuperTip = superToolTip1;
             btDominio_Teste.ItemClick += btDominio_Teste_ItemClick;
             // 
             // btWindows_Teste
@@ -94,6 +115,9 @@
             btWindows_Teste.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btWindows_Teste.ImageOptions.SvgImage");
             btWindows_Teste.Name = "btWindows_Teste";
             btWindows_Teste.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            toolTipItem2.Text = "Executa a Limpeza de arquivos temporários, Verificação de Discos com o CHKDSK e SFC ScanNow";
+            superToolTip2.Items.Add(toolTipItem2);
+            btWindows_Teste.SuperTip = superToolTip2;
             btWindows_Teste.ItemClick += btWindows_Teste_ItemClick;
             // 
             // btUtilizador_Teste
@@ -103,6 +127,9 @@
             btUtilizador_Teste.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btUtilizador_Teste.ImageOptions.SvgImage");
             btUtilizador_Teste.Name = "btUtilizador_Teste";
             btUtilizador_Teste.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            toolTipItem3.Text = "Atualiza aplicativos com Winget";
+            superToolTip3.Items.Add(toolTipItem3);
+            btUtilizador_Teste.SuperTip = superToolTip3;
             btUtilizador_Teste.ItemClick += btUtilizador_Teste_ItemClick;
             // 
             // btRede_Teste
@@ -112,6 +139,9 @@
             btRede_Teste.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btRede_Teste.ImageOptions.SvgImage");
             btRede_Teste.Name = "btRede_Teste";
             btRede_Teste.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            toolTipItem4.Text = "Executa os seguintes testes:\r\n- Testar comunicação com DC\r\n- Limpar cache de DNS\r\n- Limpar cache ARP\r\n- Limpar NetBIOS";
+            superToolTip4.Items.Add(toolTipItem4);
+            btRede_Teste.SuperTip = superToolTip4;
             btRede_Teste.ItemClick += btRede_Teste_ItemClick;
             // 
             // btResetPool
@@ -121,6 +151,9 @@
             btResetPool.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btResetPool.ImageOptions.SvgImage");
             btResetPool.Name = "btResetPool";
             btResetPool.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            toolTipItem5.Text = "Reinicia o Serviço de Impressão e limpa os trabalhos em Cache";
+            superToolTip5.Items.Add(toolTipItem5);
+            btResetPool.SuperTip = superToolTip5;
             btResetPool.ItemClick += btResetPool_ItemClick;
             // 
             // btResolveRDC
@@ -130,6 +163,9 @@
             btResolveRDC.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btResolveRDC.ImageOptions.SvgImage");
             btResolveRDC.Name = "btResolveRDC";
             btResolveRDC.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            toolTipItem6.Text = "Modifica o registo do Windows para corrigir uma vulnerabilidade de segurança do RDC (CredSSP)";
+            superToolTip6.Items.Add(toolTipItem6);
+            btResolveRDC.SuperTip = superToolTip6;
             btResolveRDC.ItemClick += btResolveRDC_ItemClick;
             // 
             // btFixTime
@@ -139,6 +175,9 @@
             btFixTime.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btFixTime.ImageOptions.SvgImage");
             btFixTime.Name = "btFixTime";
             btFixTime.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            toolTipItem7.Text = "Escolhe qual o Servidor/IP que vai definir o fuso e distribuição da Data/Hora";
+            superToolTip7.Items.Add(toolTipItem7);
+            btFixTime.SuperTip = superToolTip7;
             btFixTime.ItemClick += btFixTime_ItemClick;
             // 
             // btCorreccaoAdmin
@@ -148,6 +187,9 @@
             btCorreccaoAdmin.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btCorreccaoAdmin.ImageOptions.SvgImage");
             btCorreccaoAdmin.Name = "btCorreccaoAdmin";
             btCorreccaoAdmin.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            toolTipItem8.Text = "Redefine a senha da conta do computador no domínio através do servidor";
+            superToolTip8.Items.Add(toolTipItem8);
+            btCorreccaoAdmin.SuperTip = superToolTip8;
             btCorreccaoAdmin.ItemClick += btCorreccaoAdmin_ItemClick;
             // 
             // ckEstilo
@@ -156,6 +198,9 @@
             ckEstilo.CheckBoxVisibility = DevExpress.XtraBars.CheckBoxVisibility.AfterText;
             ckEstilo.Id = 9;
             ckEstilo.Name = "ckEstilo";
+            toolTipItem9.Text = "Altera o tema da Aplicação entre Claro e Escuro.\r\nPor defeito inicia com o mesmo tema usado no Windows.";
+            superToolTip9.Items.Add(toolTipItem9);
+            ckEstilo.SuperTip = superToolTip9;
             ckEstilo.CheckedChanged += ckEstilo_CheckedChanged;
             // 
             // ribbonPage1
