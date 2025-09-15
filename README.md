@@ -107,4 +107,4 @@ O ficheiro `App.config` deve conter:
 ---
 
 ## 📜 Licença
-[Definir licença aqui]
+Salvo indicação em contrário, os exemplos de código são disponibilizados sob a [Licença MIT](https://pt.wikipedia.org/wiki/Licen%C3%A7a_MIT).
