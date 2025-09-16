@@ -1,8 +1,12 @@
+<img width="780" height="505" alt="image" src="https://github.com/user-attachments/assets/0dff1f90-a13a-4bee-ac7a-d77d6145caec" />
+
+<img width="780" height="505" alt="image" src="https://github.com/user-attachments/assets/266211cd-1087-42ef-bfb8-1d7dc36b0182" />
+
 # 🖥️ Utilitário de Suporte Windows (AD/NTP/Manutenção)
 
 ## 📌 Visão geral
 Aplicação **Windows Forms (C# + DevExpress)** para suporte de TI em máquinas Windows integradas em domínio.  
-Inclui ferramentas para diagnóstico e correção de problemas comuns: domínio Active Directory, sincronização de hora via NTP, manutenção do Windows, correção de CredSSP no RDP, atualização de aplicativos com **Winget**, reset do spooler de impressão, utilitários de rede e alternância de tema claro/escuro.
+Inclui ferramentas para diagnóstico e correção de problemas comuns: domínio Active Directory, sincronização de hora via NTP, manutenção do Windows, correção de CredSSP no RDP, atualização de aplicativos com Winget, reset do spooler de impressão, utilitários de rede, correções administrativas e alternância de tema claro/escuro. Também apresenta um painel (dashboard) com informações do sistema e indicadores de uso de RAM e disco.
 
 ---
 
@@ -38,43 +42,72 @@ O ficheiro `App.config` deve conter:
 
 ---
 
+## 📊 Painel (Dashboard)
+
+- Na carga da aplicação e no botão Atualizar Painel, a app deteta e apresenta:
+	Nome do PC
+    Processador (via Win32_Processor)
+    RAM total instalada e percentagem de utilização
+    Edição e versão do Windows (Win32_OperatingSystem)
+    Drive C: capacidade total e percentagem de utilização
+    Os indicadores (“ponteiros”) de RAM e Disco existem para tema claro e escuro e são atualizados dinamicamente.
+
 ## 🚀 Funcionalidades
 
 ### 🏢 Domínio
-- Detecta se o computador já está no **domínio**  
-- Se não estiver, permite **ingressar no AD** (via WMI `JoinDomainOrWorkgroup`)  
-- Solicita **reinicialização** após join  
+- Testar domínio: mostra o domínio atual e um DC detetado.
+- Ingressar no AD: quando fora do domínio, oferece ingressar via WMI JoinDomainOrWorkgroup com opções:
+    Name = NomeDominio
+    UserName = NomeDominio\Administrador
+    Password = SenhaAdministrador
+    DomainControllerName = <DC escolhido>
+    FJoinOptions = 3 (juntar + criar conta)
+- Pede reinicialização após o join.
 
 ### ⏱️ Sincronização de hora
-- Seleciona servidor **NTP/gateway** configurado  
-- Executa `w32tm` para forçar sincronização  
-- Mostra **status** e **fonte** da hora  
+- Seleção de servidor a partir de ServidorGateway.
+- Sequência automática:
+	net stop w32time
+	w32tm /config /manualpeerlist:"<server>" /syncfromflags:manual /reliable:yes /update
+	net start w32time
+	w32tm /resync /force
+	Consulta w32tm /query /status e /source e mostra o resultado.
 
 ### 🗑️ Windows – Testes
-- **Limpeza** da pasta `%TEMP%`  
-- **CHKDSK** (agendado para próximo boot)  
-- **SFC /SCANNOW** (executado imediato)  
+- Limpeza de temporários (%TEMP%): apaga ficheiros/pastas e reporta contagem e espaço libertado.
+- Verificação de discos:
+	Lista discos, tipo, FS, espaço total/livre.
+	Oferece CHKDSK C: /f (agendado para próximo boot).
+	Oferece SFC /SCANNOW (execução imediata).
 
 ### 🔐 RDC – CredSSP
 - Aplica correção no Registro:  
-  `AllowEncryptionOracle = 2`  
+	`AllowEncryptionOracle = 2`  
 
 ### 👤 Utilizador – Testes
 - Atualização de **apps** via:  
-  `winget upgrade --all`  
+	`winget upgrade --all`  
 
 ### 🖨️ Impressão
-- Reinicia serviço **spooler**  
-- Limpa a pasta de **impressões em fila**  
+- Reinicia o serviço de spooler e limpa a pasta de filas:
+    net stop spooler
+    del %systemroot%\system32\spool\printers\* /Q /F /S
+    net start spooler
+- Tenta manter o serviço a correr mesmo em caso de cancelamento/erro. 
 
 ### 🌐 Rede – Testes
-- **Ping** ao DC selecionado  
-- **Flush DNS** (`ipconfig /flushdns`)  
-- **Limpar ARP** (`arp -d *`)  
-- **Reset NetBIOS cache** (`nbtstat -R`)  
+- Testar comunicação com DC (ping ao DC escolhido; mostra endereço e RTT).
+    Limpar cache DNS: ipconfig /flushdns
+    Limpar ARP: arp -d *
+    Limpar NetBIOS: nbtstat -R
 
-### 🔄 Reset de conta da máquina
-- Executa `netdom resetpwd` para sincronizar senha da conta do computador no domínio  
+### 🛠️ Correções Administrativas
+- Redefinir senha da conta do computador no domínio:
+    netdom resetpwd /server:<DC> /userd:<Domínio\Administrador> /passwordd:<Senha>
+- Ativar Acesso Administrativo Remoto (conjunto de ações):
+    Serviços: lanmanserver e lanmanworkstation em auto e iniciar
+    Firewall: ativar grupos “Descoberta de Rede” e “Partilha de Ficheiros e Impressoras”
+    Registo: LocalAccountTokenFilterPolicy = 1 para permitir administração remota com contas locais 
 
 ### 🎨 Tema
 - Alterna **tema claro/escuro** (DevExpress skins)  
@@ -99,10 +132,11 @@ O ficheiro `App.config` deve conter:
 ---
 
 ## ⚠️ Limitações
-- Algumas operações requerem **reinício** (ex.: CHKDSK)  
-- **Senha em claro** no App.config é vulnerável  
-- Necessário caminho de imagens em `Imgs\`  
-- Mensagens estão em **Português (PT-PT)**  
+- Algumas ações requerem reinício (ex.: CHKDSK).
+- As caixas de diálogo são síncronas e bloqueiam até terminar.
+- É necessário garantir os ficheiros de imagem em Imgs\.
+- Várias operações exigem privilégios de administrador.
+- Armazenar credenciais em claro é desaconselhado.
 
 ---
 

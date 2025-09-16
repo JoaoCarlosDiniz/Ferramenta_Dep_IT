@@ -81,6 +81,16 @@ namespace IT
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            Actualizar_DashBoard();
+        }
+
+        private void btDashBoardRefresh_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            Actualizar_DashBoard();
+        }
+
+        private void Actualizar_DashBoard()
+        {
             // Nome do PC
             txNomePC.Text = Environment.MachineName;
 
@@ -99,28 +109,6 @@ namespace IT
             catch (Exception)
             {
                 txProcessador.Text = "N/A";
-            }
-
-            // Total de RAM Instalada
-            try
-            {
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem"))
-                {
-                    foreach (ManagementObject obj in searcher.Get())
-                    {
-                        if (obj["TotalPhysicalMemory"] != null)
-                        {
-                            double ramBytes = Convert.ToDouble(obj["TotalPhysicalMemory"]);
-                            TotalRAM = Math.Round(ramBytes / (1024 * 1024 * 1024));
-                            txMemoriaRAM.Text = $"{TotalRAM} GB";
-                        }
-                        break;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                txMemoriaRAM.Text = "N/A";
             }
 
             // Edição e Versão do Windows
@@ -142,6 +130,69 @@ namespace IT
                 txWINVersao.Text = "N/A";
             }
 
+            // Informações de Rede
+            try
+            {
+                lbRedeIP.Text = "N/A";
+                lbRedeMask.Text = "N/A";
+                lbRedeGateway.Text = "N/A";
+
+                foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+                {
+                    if (ni.OperationalStatus == OperationalStatus.Up && (ni.NetworkInterfaceType == NetworkInterfaceType.Ethernet || ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211))
+                    {
+                        IPInterfaceProperties properties = ni.GetIPProperties();
+                        foreach (UnicastIPAddressInformation ip in properties.UnicastAddresses)
+                        {
+                            if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                            {
+                                lbRedeIP.Text = ip.Address.ToString();
+                                lbRedeMask.Text = ip.IPv4Mask.ToString();
+                                break; // Encontrou o IPv4, pode sair do loop de IPs
+                            }
+                        }
+
+                        if (properties.GatewayAddresses.Any())
+                        {
+                            lbRedeGateway.Text = properties.GatewayAddresses.FirstOrDefault(g => g.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)?.Address.ToString();
+                        }
+
+                        if (lbRedeIP.Text != "N/A")
+                        {
+                            break; // Encontrou uma interface válida, pode sair do loop de interfaces
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                lbRedeIP.Text = "N/A";
+                lbRedeMask.Text = "N/A";
+                lbRedeGateway.Text = "N/A";
+            }
+
+            // Total de RAM Instalada
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        if (obj["TotalPhysicalMemory"] != null)
+                        {
+                            double ramBytes = Convert.ToDouble(obj["TotalPhysicalMemory"]);
+                            TotalRAM = Math.Round(ramBytes / (1024 * 1024 * 1024));
+                            lbMemTotal.Text = $"{TotalRAM} GB";
+                        }
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                lbMemTotal.Text = "N/A";
+            }
+
             // RAM em uso
             try
             {
@@ -155,6 +206,10 @@ namespace IT
                             ulong freeMemory = Convert.ToUInt64(obj["FreePhysicalMemory"]); // in KB
                             ulong usedMemory = totalMemory - freeMemory;
                             RAMUso = (int)((usedMemory * 100) / totalMemory);
+                            var FreeRAM = freeMemory / (1024 * 1024);
+                            lbMemLivre.Text = $"{FreeRAM.ToString("N0")} GB";
+                            var UsedRAM = usedMemory / (1024 * 1024);
+                            lbMemUso.Text = $"{UsedRAM.ToString("N0")} GB";
                         }
                         break;
                     }
@@ -163,6 +218,8 @@ namespace IT
             catch (Exception)
             {
                 RAMUso = 0;
+                lbMemLivre.Text = "N/A";
+                lbMemUso.Text = "N/A";
             }
 
             ponteiroRAMClaro.Value = RAMUso;
@@ -176,62 +233,21 @@ namespace IT
                 {
                     TotalDisco = Math.Round((double)cDrive.TotalSize / (1024 * 1024 * 1024));
                     double freeSpace = cDrive.AvailableFreeSpace;
+                    var FreeDisco = freeSpace / (1024 * 1024 * 1024);
                     double usedSpace = cDrive.TotalSize - freeSpace;
+                    var UsedDisco = usedSpace / (1024 * 1024 * 1024);
                     DiscoUso = (int)(usedSpace * 100 / cDrive.TotalSize);
+                    lbDiskTotal.Text = $"{TotalDisco.ToString("N0")} GB";
+                    lbDiskUso.Text = $"{UsedDisco.ToString("N0")} GB";
+                    lbDiskLivre.Text = $"{FreeDisco.ToString("N0")} GB";
                 }
             }
             catch (Exception)
             {
                 DiscoUso = 0;
-            }
-
-            ponteiroDiscoClaro.Value = DiscoUso;
-            ponteiroDiscoEscuro.Value = DiscoUso;
-        }
-
-        private void btDashBoardRefresh_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            // RAM em uso
-            try
-            {
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT TotalVisibleMemorySize, FreePhysicalMemory FROM Win32_OperatingSystem"))
-                {
-                    foreach (ManagementObject obj in searcher.Get())
-                    {
-                        if (obj["TotalVisibleMemorySize"] != null && obj["FreePhysicalMemory"] != null)
-                        {
-                            ulong totalMemory = Convert.ToUInt64(obj["TotalVisibleMemorySize"]); // in KB
-                            ulong freeMemory = Convert.ToUInt64(obj["FreePhysicalMemory"]); // in KB
-                            ulong usedMemory = totalMemory - freeMemory;
-                            RAMUso = (int)((usedMemory * 100) / totalMemory);
-                        }
-                        break;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                RAMUso = 0;
-            }
-
-            ponteiroRAMClaro.Value = RAMUso;
-            ponteiroRAMEscuro.Value = RAMUso;
-
-            // Informações do Disco C:
-            try
-            {
-                DriveInfo cDrive = new DriveInfo("C");
-                if (cDrive.IsReady)
-                {
-                    TotalDisco = Math.Round((double)cDrive.TotalSize / (1024 * 1024 * 1024));
-                    double freeSpace = cDrive.AvailableFreeSpace;
-                    double usedSpace = cDrive.TotalSize - freeSpace;
-                    DiscoUso = (int)(usedSpace * 100 / cDrive.TotalSize);
-                }
-            }
-            catch (Exception)
-            {
-                DiscoUso = 0;
+                lbDiskTotal.Text = "N/A";
+                lbDiskUso.Text = "N/A";
+                lbDiskLivre.Text = "N/A";
             }
 
             ponteiroDiscoClaro.Value = DiscoUso;
@@ -271,7 +287,7 @@ namespace IT
 
         private void JoinDomain()
         {
-            var result = MessageBox.Show("O computador não pertence a um domínio. Deseja adicioná-lo agora?", "Adicionar ao Domínio", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = MessageBox.Show("O computador não pertence a um domínio." + Environment.NewLine + "Deseja adicioná-lo agora?", "Adicionar ao Domínio", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 string selectedDC = ShowSelectDialog("Selecionar Servidor de DC", "Escolha o servidor de DC:", ListServerDC);
@@ -295,11 +311,11 @@ namespace IT
 
                     if (returnValue == 0)
                     {
-                        MessageBox.Show("O computador foi adicionado ao domínio com sucesso. É necessário reiniciar para aplicar as alterações.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("O computador foi adicionado ao domínio com sucesso." + Environment.NewLine + "É necessário reiniciar para aplicar as alterações.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
-                        MessageBox.Show($"Falha ao adicionar o computador ao domínio. Código de erro: {returnValue}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Falha ao adicionar o computador ao domínio." + Environment.NewLine + "Código de erro: {returnValue}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 catch (Exception ex)
@@ -321,7 +337,7 @@ namespace IT
             {
                 try
                 {
-                    MessageBox.Show("O serviço de tempo será reiniciado e configurado. Este processo pode exigir privilégios de administrador.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("O serviço de tempo será reiniciado e configurado." + Environment.NewLine + "Este processo pode exigir privilégios de administrador.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                     // Parar o serviço de tempo
                     RunCommandAsAdmin("/c net stop w32time", "Serviço de tempo parado com sucesso.", "Falha ao parar o serviço de tempo.");
@@ -494,7 +510,7 @@ namespace IT
         {
             try
             {
-                MessageBox.Show("A verificação de disco (chkdsk C: /f) será agendada para a próxima reinicialização. Este processo pode exigir privilégios de administrador.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("A verificação de disco (chkdsk C: /f) será agendada para a próxima reinicialização." + Environment.NewLine + "Este processo pode exigir privilégios de administrador.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", "/c echo S | chkdsk C: /f")
                 {
@@ -522,7 +538,7 @@ namespace IT
         {
             try
             {
-                MessageBox.Show("A verificação de ficheiros de sistema (sfc /scannow) será iniciada. Este processo pode demorar algum tempo e pode exigir privilégios de administrador. Por favor, aguarde.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("A verificação de ficheiros de sistema (sfc /scannow) será iniciada." + Environment.NewLine + "Este processo pode demorar algum tempo e pode exigir privilégios de administrador." + Environment.NewLine + "Por favor, aguarde.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", "/c sfc /scannow")
                 {
@@ -548,7 +564,7 @@ namespace IT
 
         private void btResolveRDC_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            if (MessageBox.Show("Esta operação irá modificar o registo do Windows para corrigir uma vulnerabilidade de segurança do RDC (CredSSP). Deseja continuar?", "Resolver Vulnerabilidade RDC", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Esta operação irá modificar o registo do Windows para corrigir uma vulnerabilidade de segurança do RDC (CredSSP)." + Environment.NewLine + "Deseja continuar?", "Resolver Vulnerabilidade RDC", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 string command = "/c REG ADD HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\CredSSP\\Parameters /v AllowEncryptionOracle /t REG_DWORD /d 2 /f";
                 string successMessage = "A correção para a vulnerabilidade de segurança do RDC foi aplicada com sucesso.";
@@ -584,9 +600,9 @@ namespace IT
         {
             try
             {
-                MessageBox.Show("A atualização de aplicativos com o Winget será iniciada. Este processo pode demorar algum tempo e pode exigir privilégios de administrador. Por favor, aguarde.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("A atualização de aplicativos com o Winget será iniciada." + Environment.NewLine + "Este processo pode demorar algum tempo e pode exigir privilégios de administrador." + Environment.NewLine + "Por favor, aguarde.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", "/c winget upgrade --all")
+                ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", "/c winget upgrade --all --accept-source-agreements --accept-package-agreements")
                 {
                     Verb = "runas", // Request administrator privileges
                     UseShellExecute = true,
@@ -614,7 +630,7 @@ namespace IT
             {
                 try
                 {
-                    MessageBox.Show("O serviço de impressão será reiniciado. Este processo pode exigir privilégios de administrador.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("O serviço de impressão será reiniciado." + Environment.NewLine + "Este processo pode exigir privilégios de administrador.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                     int exitCode;
 
@@ -622,7 +638,7 @@ namespace IT
                     exitCode = RunCommand("/c net stop spooler");
                     if (exitCode != 0)
                     {
-                        MessageBox.Show($"Falha ao parar o serviço de impressão. Código de erro: {exitCode}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Falha ao parar o serviço de impressão." + Environment.NewLine + "Código de erro: {exitCode}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         // Tenta iniciar o serviço mesmo que a paragem tenha falhado, para garantir que não fica parado
                         RunCommand("/c net start spooler");
                         return;
@@ -641,7 +657,7 @@ namespace IT
                     exitCode = RunCommand("/c net start spooler");
                     if (exitCode != 0)
                     {
-                        MessageBox.Show($"Falha ao iniciar o serviço de impressão. Código de erro: {exitCode}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Falha ao iniciar o serviço de impressão." + Environment.NewLine + "Código de erro: {exitCode}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
@@ -743,6 +759,32 @@ namespace IT
 
         private void btCorreccaoAdmin_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            List<string> options = new List<string>
+            {
+                "Redefinir Senha da Conta do Computador",
+                "Ativar Acesso Administrativo Remoto"
+            };
+
+            string selectedOption = ShowSelectDialog("Correções Administrativas", "Escolha a correção a aplicar:", options);
+
+            if (string.IsNullOrEmpty(selectedOption))
+            {
+                return; // User cancelled
+            }
+
+            switch (selectedOption)
+            {
+                case "Redefinir Senha da Conta do Computador":
+                    ResetComputerAccountPassword();
+                    break;
+                case "Ativar Acesso Administrativo Remoto":
+                    EnableRemoteAdminAccess();
+                    break;
+            }
+        }
+
+        private void ResetComputerAccountPassword()
+        {
             string selectedDC = ShowSelectDialog("Selecionar Servidor de DC", "Escolha o servidor de DC para redefinir a senha da conta do computador:", ListServerDC);
             if (string.IsNullOrEmpty(selectedDC))
             {
@@ -756,6 +798,27 @@ namespace IT
                 string errorMessage = "Ocorreu um erro ao redefinir a senha da conta do computador.";
 
                 RunCommandAsAdmin(command, successMessage, errorMessage);
+            }
+        }
+
+        private void EnableRemoteAdminAccess()
+        {
+            if (MessageBox.Show("Esta operação irá ativar serviços, regras de firewall e alterar o registo para permitir acesso administrativo remoto." + Environment.NewLine + "Deseja continuar?", "Ativar Acesso Administrativo Remoto", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                // Ativar serviços necessários
+                RunCommandAsAdmin("/c sc config lanmanserver start= auto", "Serviço 'Server' configurado para iniciar automaticamente.", "Falha ao configurar o serviço 'Server'.");
+                RunCommandAsAdmin("/c sc start lanmanserver", "Serviço 'Server' iniciado.", "Falha ao iniciar o serviço 'Server'.");
+                RunCommandAsAdmin("/c sc config lanmanworkstation start= auto", "Serviço 'Workstation' configurado para iniciar automaticamente.", "Falha ao configurar o serviço 'Workstation'.");
+                RunCommandAsAdmin("/c sc start lanmanworkstation", "Serviço 'Workstation' iniciado.", "Falha ao iniciar o serviço 'Workstation'.");
+
+                // Ativar regras de firewall
+                RunCommandAsAdmin("/c netsh advfirewall firewall set rule group=\"Descoberta de Rede\" new enable=Yes", "Regras de firewall para 'Descoberta de Rede' ativadas.", "Falha ao ativar regras de firewall para 'Descoberta de Rede'.");
+                RunCommandAsAdmin("/c netsh advfirewall firewall set rule group=\"Partilha de Ficheiros e Impressoras\" new enable=Yes", "Regras de firewall para 'Partilha de Ficheiros e Impressoras' ativadas.", "Falha ao ativar regras de firewall para 'Partilha de Ficheiros e Impressoras'.");
+
+                // Criar/alterar registo para permitir acesso remoto com contas locais
+                RunCommandAsAdmin("/c reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\" /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f", "Registo para acesso remoto com contas locais configurado.", "Falha ao configurar o registo para acesso remoto.");
+
+                MessageBox.Show("A configuração de acesso administrativo remoto foi concluída.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
         #endregion

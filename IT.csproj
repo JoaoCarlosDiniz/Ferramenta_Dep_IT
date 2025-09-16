@@ -8,6 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <StartupObject>IT.Program</StartupObject>
     <ApplicationIcon>Imgs\app_icon_chip.ico</ApplicationIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -51,6 +52,10 @@
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
