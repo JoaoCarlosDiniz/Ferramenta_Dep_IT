@@ -578,49 +578,21 @@ namespace IT
         #region Utilizador
         private void btUtilizador_Teste_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            List<string> options = new List<string>
-            {
-                "Atualizar aplicativos com Winget"
-            };
-
-            string selectedOption = ShowSelectDialog("Testes de Utilizador", "Escolha o teste a executar:", options);
-
-            if (!string.IsNullOrEmpty(selectedOption))
-            {
-                switch (selectedOption)
-                {
-                    case "Atualizar aplicativos com Winget":
-                        UpdateAppsWithWinget();
-                        break;
-                }
-            }
+            UpdateAppsWithWinget();
         }
 
         private void UpdateAppsWithWinget()
         {
             try
             {
-                MessageBox.Show("A atualização de aplicativos com o Winget será iniciada." + Environment.NewLine + "Este processo pode demorar algum tempo e pode exigir privilégios de administrador." + Environment.NewLine + "Por favor, aguarde.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", "/c winget upgrade --all --accept-source-agreements --accept-package-agreements")
+                using (var updateForm = new WingetUpdateForm())
                 {
-                    Verb = "runas", // Request administrator privileges
-                    UseShellExecute = true,
-                    CreateNoWindow = false
-                };
-
-                Process process = Process.Start(psi);
-                process.WaitForExit();
-
-                MessageBox.Show("A atualização de aplicativos foi concluída.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223) // Operation was canceled by the user
-            {
-                MessageBox.Show("A operação foi cancelada pelo utilizador.", "Cancelado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    updateForm.ShowDialog(this);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocorreu um erro ao executar o Winget: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocorreu um erro ao iniciar o processo de atualização: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -967,5 +939,18 @@ namespace IT
             }
         }
         #endregion
+    }
+
+    public class WingetApp
+    {
+        public string Name { get; set; }
+        public string Id { get; set; }
+        public string VersaoAtual { get; set; }
+        public string VersaoDisponivel { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name} (Versão: {VersaoAtual} -> {VersaoDisponivel})";
+        }
     }
 }
