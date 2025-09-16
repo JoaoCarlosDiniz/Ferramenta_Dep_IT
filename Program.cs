@@ -35,11 +35,6 @@ namespace Ferramenta_IT
                         return; // Sai da aplicação se a instalação falhar
                     }
                 }
-                else
-                {
-                    MessageBox.Show($"O instalador não foi encontrado em: {installerPath}", "Instalador Ausente", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return; // Sai da aplicação se o instalador não for encontrado
-                }
             }
 
             Application.EnableVisualStyles();

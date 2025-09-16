@@ -9,6 +9,7 @@
     <StartupObject>Ferramenta_IT.Program</StartupObject>
     <ApplicationIcon>Imgs\app_icon_chip.ico</ApplicationIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
