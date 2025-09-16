@@ -141,10 +141,14 @@ O ficheiro `App.config` deve conter:
 
 <img width="800" height="398" alt="image" src="https://github.com/user-attachments/assets/ed6dbfa2-11b2-4f20-9784-12b0562e38d2" />
 
+<img width="802" height="482" alt="Captura de ecrã 2025-09-16 192211" src="https://github.com/user-attachments/assets/f779f457-27ac-497e-8e0e-022b1c396478" />
+
 # 🎨 Tema Escuro
 <img width="963" height="626" alt="image" src="https://github.com/user-attachments/assets/fae02a02-8c1d-4526-895a-fe93e3129551" />
 
 <img width="800" height="398" alt="image" src="https://github.com/user-attachments/assets/85c9c564-8805-43f9-888b-157f82edabc7" />
+
+<img width="802" height="482" alt="Captura de ecrã 2025-09-16 192202" src="https://github.com/user-attachments/assets/f35b66ae-c148-4ec9-96ab-1f7738a65494" />
 
 ---
 
