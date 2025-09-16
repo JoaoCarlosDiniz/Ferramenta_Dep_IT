@@ -2,7 +2,7 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
 
-namespace IT
+namespace Ferramenta_IT
 {
     internal static class Program
     {
@@ -44,7 +44,7 @@ namespace IT
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new Dashboard());
         }
 
         /// <summary>

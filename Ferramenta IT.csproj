@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <StartupObject>IT.Program</StartupObject>
+    <StartupObject>Ferramenta_IT.Program</StartupObject>
     <ApplicationIcon>Imgs\app_icon_chip.ico</ApplicationIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DevExpress.Win.Design" Version="24.2.8" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.9" />
     <PackageReference Include="System.DirectoryServices" Version="9.0.0-preview.5.24306.7" />
     <PackageReference Include="System.Management" Version="8.0.0" />
