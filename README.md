@@ -45,12 +45,12 @@ O ficheiro `App.config` deve conter:
 ## 📊 Painel (Dashboard)
 
 - Na carga da aplicação e no botão Atualizar Painel, a app deteta e apresenta:
-	Nome do PC
-    Processador (via Win32_Processor)
-    RAM total instalada e percentagem de utilização
-    Edição e versão do Windows (Win32_OperatingSystem)
-    Drive C: capacidade total e percentagem de utilização
-    Os indicadores (“ponteiros”) de RAM e Disco existem para tema claro e escuro e são atualizados dinamicamente.
+	- Nome do PC
+    - Processador (via Win32_Processor)
+    - RAM total instalada e percentagem de utilização
+    - Edição e versão do Windows (Win32_OperatingSystem)
+    - Drive C: capacidade total e percentagem de utilização
+    - Os indicadores (“ponteiros”) de RAM e Disco existem para tema claro e escuro e são atualizados dinamicamente.
 
 ## 🚀 Funcionalidades
 
