@@ -1,6 +1,6 @@
-<img width="780" height="505" alt="image" src="https://github.com/user-attachments/assets/0dff1f90-a13a-4bee-ac7a-d77d6145caec" />
+<img width="963" height="626" alt="image" src="https://github.com/user-attachments/assets/5f172f0c-136b-41d8-bb8d-8035481bed23" />
 
-<img width="780" height="505" alt="image" src="https://github.com/user-attachments/assets/266211cd-1087-42ef-bfb8-1d7dc36b0182" />
+<img width="963" height="626" alt="image" src="https://github.com/user-attachments/assets/fae02a02-8c1d-4526-895a-fe93e3129551" />
 
 # 🖥️ Utilitário de Suporte Windows (AD/NTP/Manutenção)
 
