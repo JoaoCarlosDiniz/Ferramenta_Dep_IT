@@ -14,7 +14,7 @@ namespace IT
         {
             if (!IsNetDesktopRuntimeInstalled("9.0"))
             {
-                MessageBox.Show("O .NET Desktop Runtime v9.0 não está instalado. O instalador será iniciado agora.", "Pré-requisito ausente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("O .NET Desktop Runtime v9.0 nÃ£o estÃ¡ instalado. A instalaÃ§Ã£ serÃ¡ iniciada agora.", "PrÃ©-requisito ausente", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
                 // Substitua "dotnet-installer.exe" pelo nome exato do seu instalador.
                 string installerPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Requisitos", "dotnet-installer.exe");
@@ -25,20 +25,15 @@ namespace IT
                     {
                         ProcessStartInfo startInfo = new ProcessStartInfo(installerPath)
                         {
-                            UseShellExecute = true // UseShellExecute = true para elevar privilégios (UAC) se necessário
+                            UseShellExecute = true // UseShellExecute = true para elevar privilï¿½gios (UAC) se necessï¿½rio
                         };
                         Process.Start(startInfo)?.WaitForExit();
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Ocorreu um erro ao tentar executar o instalador: {ex.Message}", "Erro de Instalação", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return; // Sai da aplicação se a instalação falhar
+                        MessageBox.Show($"Ocorreu um erro ao tentar executar o instalador: {ex.Message}", "Erro de Instalaï¿½ï¿½o", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return; // Sai da aplicaï¿½ï¿½o se a instalaï¿½ï¿½o falhar
                     }
-                }
-                else
-                {
-                    MessageBox.Show($"O instalador não foi encontrado em: {installerPath}", "Instalador Ausente", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return; // Sai da aplicação se o instalador não for encontrado
                 }
             }
 
@@ -48,25 +43,25 @@ namespace IT
         }
 
         /// <summary>
-        /// Verifica se uma versão específica do .NET Desktop Runtime está instalada.
+        /// Verifica se uma versï¿½o especï¿½fica do .NET Desktop Runtime estï¿½ instalada.
         /// </summary>
-        /// <param name="requiredVersion">A versão principal a ser verificada (ex: "9.0").</param>
-        /// <returns>True se a versão ou uma mais recente estiver instalada, caso contrário, false.</returns>
+        /// <param name="requiredVersion">A versï¿½o principal a ser verificada (ex: "9.0").</param>
+        /// <returns>True se a versï¿½o ou uma mais recente estiver instalada, caso contrï¿½rio, false.</returns>
         private static bool IsNetDesktopRuntimeInstalled(string requiredVersion)
         {
             try
             {
                 if (!Version.TryParse(requiredVersion, out Version requiredVer))
                 {
-                    return false; // Versão requerida inválida
+                    return false; // Versï¿½o requerida invï¿½lida
                 }
                 int requiredMajor = requiredVer.Major;
 
-                // Lista de todos os possíveis caminhos base e arquiteturas
+                // Lista de todos os possï¿½veis caminhos base e arquiteturas
                 var basePaths = new[]
                 {
                     @"SOFTWARE\dotnet\Setup\InstalledVersions",
-                    @"SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions" // Para instalações 32-bit em SO 64-bit
+                    @"SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions" // Para instalaï¿½ï¿½es 32-bit em SO 64-bit
                 };
                 var architectures = new[] { "x64", "x86" };
                 var fxNames = new[] { "Microsoft.WindowsDesktop.App", "Microsoft.NETCore.App" };
@@ -82,13 +77,13 @@ namespace IT
                             {
                                 if (key != null)
                                 {
-                                    // As versões estão nos nomes dos valores (ex: "9.0.9")
+                                    // As versï¿½es estï¿½o nos nomes dos valores (ex: "9.0.9")
                                     foreach (var valueName in key.GetValueNames())
                                     {
-                                        // Tenta fazer o parse da versão a partir do nome do valor
+                                        // Tenta fazer o parse da versï¿½o a partir do nome do valor
                                         if (Version.TryParse(valueName.Split('-')[0], out Version installedVersion) && installedVersion.Major == requiredMajor)
                                         {
-                                            return true; // Encontrou uma versão compatível
+                                            return true; // Encontrou uma versï¿½o compatï¿½vel
                                         }
                                     }
                                 }
@@ -99,11 +94,11 @@ namespace IT
             }
             catch (Exception)
             {
-                // Se ocorrer um erro ao ler o registro, assume que não está instalado para segurança.
+                // Se ocorrer um erro ao ler o registro, assume que nï¿½o estï¿½ instalado para seguranï¿½a.
                 return false;
             }
 
-            return false; // Não encontrou em nenhum dos caminhos verificados
+            return false; // Nï¿½o encontrou em nenhum dos caminhos verificados
         }
     }
 }
