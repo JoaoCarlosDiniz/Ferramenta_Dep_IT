@@ -13,6 +13,9 @@
 
   <ItemGroup>
     <Content Include="Imgs\app_icon_chip.ico" />
+    <Content Include="Requisitos\dotnet-installer.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

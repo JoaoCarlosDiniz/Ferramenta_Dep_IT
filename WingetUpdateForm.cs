@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace IT
 {
@@ -36,7 +32,7 @@ namespace IT
             checkedListBoxApps.FormattingEnabled = true;
             checkedListBoxApps.Location = new Point(12, 35);
             checkedListBoxApps.Name = "checkedListBoxApps";
-            checkedListBoxApps.Size = new Size(774, 238);
+            checkedListBoxApps.Size = new Size(774, 166);
             checkedListBoxApps.TabIndex = 0;
             // 
             // labelStatus
@@ -69,7 +65,7 @@ namespace IT
             // WingetUpdateForm
             // 
             Appearance.Options.UseFont = true;
-            ClientSize = new Size(798, 364);
+            ClientSize = new Size(798, 356);
             Controls.Add(buttonCancel);
             Controls.Add(buttonUpdate);
             Controls.Add(labelStatus);
@@ -127,25 +123,28 @@ namespace IT
 
                     var lines = rawOutput.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                     bool headerFound = false;
+                    
+                    // Regex to parse the line. It looks for at least two spaces between columns.
+                    // It captures: 1. Name, 2. ID, 3. Current Version, 4. Available Version
+                    var appRegex = new Regex(@"^(.*?)\s{2,}(.*?)\s{2,}(.*?)\s{2,}(.*?)\s{2,}", RegexOptions.Compiled);
 
                     foreach (var line in lines)
                     {
-                        if (!headerFound && line.Contains("Name") && line.Contains("Id"))
+                        if (!headerFound && (line.Contains("Name") || line.Contains("Nome")) && (line.Contains("Id") || line.Contains("ID")))
                         {
                             headerFound = true;
                             continue;
                         }
 
-                        if (headerFound && !line.StartsWith("---") && !line.Contains("upgrades available"))
+                        if (headerFound && !line.StartsWith("---") && !line.Contains("upgrades available") && !line.Contains("atualizações disponíveis"))
                         {
-                            // Usa Regex para dividir a linha por 2 ou mais espaços.
-                            string[] columns = Regex.Split(line, @"\s{2,}");
-                            if (columns.Length >= 4) // Garante que temos as colunas de versão
+                            var match = appRegex.Match(line);
+                            if (match.Success)
                             {
-                                string name = columns[0].Trim();
-                                string id = columns[1].Trim();
-                                string currentVersion = columns[2].Trim();
-                                string availableVersion = columns[3].Trim();
+                                string name = match.Groups[1].Value.Trim();
+                                string id = match.Groups[2].Value.Trim();
+                                string currentVersion = match.Groups[3].Value.Trim();
+                                string availableVersion = match.Groups[4].Value.Trim().Split(' ')[0]; // Take first part of available version
 
                                 if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(id))
                                 {

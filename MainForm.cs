@@ -1,16 +1,13 @@
-using DevExpress.LookAndFeel.Design;
 using DevExpress.XtraBars.Ribbon;
 using Microsoft.Win32;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Diagnostics;
-using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
 using System.IO;
 using System.Management;
 using System.Net.NetworkInformation;
 using System.Text;
-using System.Windows.Forms;
 
 namespace IT
 {
