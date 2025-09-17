@@ -92,171 +92,6 @@ namespace IT
             Actualizar_DashBoard();
         }
 
-        private void Actualizar_DashBoard()
-        {
-            // Nome do PC
-            txNomePC.Text = Environment.MachineName;
-
-            // Informação do Processador
-            try
-            {
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Name FROM Win32_Processor"))
-                {
-                    foreach (ManagementObject obj in searcher.Get())
-                    {
-                        txProcessador.Text = obj["Name"]?.ToString();
-                        break;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                txProcessador.Text = "N/A";
-            }
-
-            // Edição e Versão do Windows
-            try
-            {
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption, Version FROM Win32_OperatingSystem"))
-                {
-                    foreach (ManagementObject obj in searcher.Get())
-                    {
-                        txWINEdicao.Text = obj["Caption"]?.ToString();
-                        txWINVersao.Text = obj["Version"]?.ToString();
-                        break;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                txWINEdicao.Text = "N/A";
-                txWINVersao.Text = "N/A";
-            }
-
-            // Informações de Rede
-            try
-            {
-                lbRedeIP.Text = "N/A";
-                lbRedeMask.Text = "N/A";
-                lbRedeGateway.Text = "N/A";
-
-                foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
-                {
-                    if (ni.OperationalStatus == OperationalStatus.Up && (ni.NetworkInterfaceType == NetworkInterfaceType.Ethernet || ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211))
-                    {
-                        IPInterfaceProperties properties = ni.GetIPProperties();
-                        foreach (UnicastIPAddressInformation ip in properties.UnicastAddresses)
-                        {
-                            if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                            {
-                                lbRedeIP.Text = ip.Address.ToString();
-                                lbRedeMask.Text = ip.IPv4Mask.ToString();
-                                break; // Encontrou o IPv4, pode sair do loop de IPs
-                            }
-                        }
-
-                        if (properties.GatewayAddresses.Any())
-                        {
-                            lbRedeGateway.Text = properties.GatewayAddresses.FirstOrDefault(g => g.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)?.Address.ToString();
-                        }
-
-                        if (lbRedeIP.Text != "N/A")
-                        {
-                            break; // Encontrou uma interface válida, pode sair do loop de interfaces
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                lbRedeIP.Text = "N/A";
-                lbRedeMask.Text = "N/A";
-                lbRedeGateway.Text = "N/A";
-            }
-
-            // Total de RAM Instalada
-            try
-            {
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem"))
-                {
-                    foreach (ManagementObject obj in searcher.Get())
-                    {
-                        if (obj["TotalPhysicalMemory"] != null)
-                        {
-                            double ramBytes = Convert.ToDouble(obj["TotalPhysicalMemory"]);
-                            TotalRAM = Math.Round(ramBytes / (1024 * 1024 * 1024));
-                            lbMemTotal.Text = $"{TotalRAM} GB";
-                        }
-                        break;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                lbMemTotal.Text = "N/A";
-            }
-
-            // RAM em uso
-            try
-            {
-                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT TotalVisibleMemorySize, FreePhysicalMemory FROM Win32_OperatingSystem"))
-                {
-                    foreach (ManagementObject obj in searcher.Get())
-                    {
-                        if (obj["TotalVisibleMemorySize"] != null && obj["FreePhysicalMemory"] != null)
-                        {
-                            ulong totalMemory = Convert.ToUInt64(obj["TotalVisibleMemorySize"]); // in KB
-                            ulong freeMemory = Convert.ToUInt64(obj["FreePhysicalMemory"]); // in KB
-                            ulong usedMemory = totalMemory - freeMemory;
-                            RAMUso = (int)((usedMemory * 100) / totalMemory);
-                            var FreeRAM = freeMemory / (1024 * 1024);
-                            lbMemLivre.Text = $"{FreeRAM.ToString("N0")} GB";
-                            var UsedRAM = usedMemory / (1024 * 1024);
-                            lbMemUso.Text = $"{UsedRAM.ToString("N0")} GB";
-                        }
-                        break;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                RAMUso = 0;
-                lbMemLivre.Text = "N/A";
-                lbMemUso.Text = "N/A";
-            }
-
-            ponteiroRAMClaro.Value = RAMUso;
-            ponteiroRAMEscuro.Value = RAMUso;
-
-            // Informações do Disco C:
-            try
-            {
-                DriveInfo cDrive = new DriveInfo("C");
-                if (cDrive.IsReady)
-                {
-                    TotalDisco = Math.Round((double)cDrive.TotalSize / (1024 * 1024 * 1024));
-                    double freeSpace = cDrive.AvailableFreeSpace;
-                    var FreeDisco = freeSpace / (1024 * 1024 * 1024);
-                    double usedSpace = cDrive.TotalSize - freeSpace;
-                    var UsedDisco = usedSpace / (1024 * 1024 * 1024);
-                    DiscoUso = (int)(usedSpace * 100 / cDrive.TotalSize);
-                    lbDiskTotal.Text = $"{TotalDisco.ToString("N0")} GB";
-                    lbDiskUso.Text = $"{UsedDisco.ToString("N0")} GB";
-                    lbDiskLivre.Text = $"{FreeDisco.ToString("N0")} GB";
-                }
-            }
-            catch (Exception)
-            {
-                DiscoUso = 0;
-                lbDiskTotal.Text = "N/A";
-                lbDiskUso.Text = "N/A";
-                lbDiskLivre.Text = "N/A";
-            }
-
-            ponteiroDiscoClaro.Value = DiscoUso;
-            ponteiroDiscoEscuro.Value = DiscoUso;
-        }
-
         #region Domínio
         private void btDominio_Teste_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -938,6 +773,186 @@ namespace IT
         #endregion
 
         #region Funções Comuns
+        private void Actualizar_DashBoard()
+        {
+            // Nome do PC
+            txNomePC.Text = Environment.MachineName;
+
+            // Informação do Processador
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Name FROM Win32_Processor"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        txProcessador.Text = obj["Name"]?.ToString();
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                txProcessador.Text = "N/A";
+            }
+
+            // Edição e Versão do Windows
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption, Version FROM Win32_OperatingSystem"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        txWINEdicao.Text = obj["Caption"]?.ToString();
+                        txWINVersao.Text = obj["Version"]?.ToString();
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                txWINEdicao.Text = "N/A";
+                txWINVersao.Text = "N/A";
+            }
+
+            // Informações de Rede
+            try
+            {
+                lbRedeIP.Text = "N/A";
+                lbRedeMask.Text = "N/A";
+                lbRedeGateway.Text = "N/A";
+
+                foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+                {
+                    if (ni.OperationalStatus == OperationalStatus.Up && (ni.NetworkInterfaceType == NetworkInterfaceType.Ethernet || ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211))
+                    {
+                        IPInterfaceProperties properties = ni.GetIPProperties();
+                        foreach (UnicastIPAddressInformation ip in properties.UnicastAddresses)
+                        {
+                            if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                            {
+                                lbRedeIP.Text = ip.Address.ToString();
+                                lbRedeMask.Text = ip.IPv4Mask.ToString();
+                                break; // Encontrou o IPv4, pode sair do loop de IPs
+                            }
+                        }
+
+                        if (properties.GatewayAddresses.Any())
+                        {
+                            lbRedeGateway.Text = properties.GatewayAddresses.FirstOrDefault(g => g.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)?.Address.ToString();
+                        }
+
+                        if (lbRedeIP.Text != "N/A")
+                        {
+                            break; // Encontrou uma interface válida, pode sair do loop de interfaces
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                lbRedeIP.Text = "N/A";
+                lbRedeMask.Text = "N/A";
+                lbRedeGateway.Text = "N/A";
+            }
+
+            // Total de RAM Instalada
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        if (obj["TotalPhysicalMemory"] != null)
+                        {
+                            double ramBytes = Convert.ToDouble(obj["TotalPhysicalMemory"]);
+                            TotalRAM = Math.Round(ramBytes / (1024 * 1024 * 1024));
+                            lbMemTotal.Text = $"{TotalRAM} GB";
+                        }
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                lbMemTotal.Text = "N/A";
+            }
+
+            // RAM em uso
+            try
+            {
+                using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT TotalVisibleMemorySize, FreePhysicalMemory FROM Win32_OperatingSystem"))
+                {
+                    foreach (ManagementObject obj in searcher.Get())
+                    {
+                        if (obj["TotalVisibleMemorySize"] != null && obj["FreePhysicalMemory"] != null)
+                        {
+                            ulong totalMemory = Convert.ToUInt64(obj["TotalVisibleMemorySize"]); // in KB
+                            ulong freeMemory = Convert.ToUInt64(obj["FreePhysicalMemory"]); // in KB
+                            ulong usedMemory = totalMemory - freeMemory;
+                            RAMUso = (int)((usedMemory * 100) / totalMemory);
+                            var FreeRAM = freeMemory / (1024 * 1024);
+                            lbMemLivre.Text = $"{FreeRAM.ToString("N0")} GB";
+                            var UsedRAM = usedMemory / (1024 * 1024);
+                            lbMemUso.Text = $"{UsedRAM.ToString("N0")} GB";
+                        }
+                        break;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                RAMUso = 0;
+                lbMemLivre.Text = "N/A";
+                lbMemUso.Text = "N/A";
+            }
+
+            ponteiroRAMClaro.Value = RAMUso;
+            ponteiroRAMEscuro.Value = RAMUso;
+
+            // Informações do Disco C:
+            try
+            {
+                DriveInfo cDrive = new DriveInfo("C");
+                if (cDrive.IsReady)
+                {
+                    TotalDisco = Math.Round((double)cDrive.TotalSize / (1024 * 1024 * 1024));
+                    double freeSpace = cDrive.AvailableFreeSpace;
+                    var FreeDisco = freeSpace / (1024 * 1024 * 1024);
+                    double usedSpace = cDrive.TotalSize - freeSpace;
+                    var UsedDisco = usedSpace / (1024 * 1024 * 1024);
+                    DiscoUso = (int)(usedSpace * 100 / cDrive.TotalSize);
+                    lbDiskTotal.Text = $"{TotalDisco.ToString("N0")} GB";
+                    lbDiskUso.Text = $"{UsedDisco.ToString("N0")} GB";
+                    lbDiskLivre.Text = $"{FreeDisco.ToString("N0")} GB";
+                }
+            }
+            catch (Exception)
+            {
+                DiscoUso = 0;
+                lbDiskTotal.Text = "N/A";
+                lbDiskUso.Text = "N/A";
+                lbDiskLivre.Text = "N/A";
+            }
+
+            ponteiroDiscoClaro.Value = DiscoUso;
+            ponteiroDiscoEscuro.Value = DiscoUso;
+        }
+
+        private int RunCommand(string command)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", command)
+            {
+                Verb = "runas", // Request administrator privileges
+                UseShellExecute = true,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+
+            Process process = Process.Start(psi);
+            process.WaitForExit();
+            return process.ExitCode;
+        }
+
         private void RunCommandAsAdmin(string command, string successMessage, string errorMessage)
         {
             try
@@ -1047,21 +1062,6 @@ namespace IT
                 return $"Erro ao executar o comando: {ex.Message}";
             }
             return output;
-        }
-
-        private int RunCommand(string command)
-        {
-            ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", command)
-            {
-                Verb = "runas", // Request administrator privileges
-                UseShellExecute = true,
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-
-            Process process = Process.Start(psi);
-            process.WaitForExit();
-            return process.ExitCode;
         }
 
         private string ShowSelectDialog(string NomeOpcao, string TextoOpcao, List<string> Opcoes)
