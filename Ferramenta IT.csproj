@@ -7,13 +7,13 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <StartupObject>Ferramenta_IT.Program</StartupObject>
-    <ApplicationIcon>Imgs\app_icon_chip.ico</ApplicationIcon>
+    <ApplicationIcon>folder_system_15426.ico</ApplicationIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Imgs\app_icon_chip.ico" />
+    <Content Include="folder_system_15426.ico" />
     <Content Include="Requisitos\dotnet-installer.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

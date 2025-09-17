@@ -75,6 +75,10 @@
             label11 = new Label();
             label12 = new Label();
             label13 = new Label();
+            diagnósticoDeMemóriaToolStripMenuItem = new ToolStripMenuItem();
+            backupDeDriversToolStripMenuItem = new ToolStripMenuItem();
+            pontoDeRestauroToolStripMenuItem = new ToolStripMenuItem();
+            manutençãoDoWindowsToolStripMenuItem = new ToolStripMenuItem();
             barraMenu.SuspendLayout();
             InfoPC.SuspendLayout();
             InfoMemoria.SuspendLayout();
@@ -115,7 +119,7 @@
             // 
             // windowsToolStripMenuItem
             // 
-            windowsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { testeDeDiscoEWindowsToolStripMenuItem, correcãoDoErroRDCCredSSPToolStripMenuItem });
+            windowsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { testeDeDiscoEWindowsToolStripMenuItem, correcãoDoErroRDCCredSSPToolStripMenuItem, diagnósticoDeMemóriaToolStripMenuItem, backupDeDriversToolStripMenuItem, pontoDeRestauroToolStripMenuItem, manutençãoDoWindowsToolStripMenuItem });
             windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
             windowsToolStripMenuItem.Size = new Size(70, 20);
             windowsToolStripMenuItem.Text = "Windows";
@@ -186,7 +190,7 @@
             // actualizarToolStripMenuItem
             // 
             actualizarToolStripMenuItem.Name = "actualizarToolStripMenuItem";
-            actualizarToolStripMenuItem.Size = new Size(180, 22);
+            actualizarToolStripMenuItem.Size = new Size(128, 22);
             actualizarToolStripMenuItem.Text = "Actualizar";
             actualizarToolStripMenuItem.Click += actualizarToolStripMenuItem_Click;
             // 
@@ -536,6 +540,34 @@
             label13.TabIndex = 19;
             label13.Text = "IP:";
             // 
+            // diagnósticoDeMemóriaToolStripMenuItem
+            // 
+            diagnósticoDeMemóriaToolStripMenuItem.Name = "diagnósticoDeMemóriaToolStripMenuItem";
+            diagnósticoDeMemóriaToolStripMenuItem.Size = new Size(236, 22);
+            diagnósticoDeMemóriaToolStripMenuItem.Text = "Diagnóstico de Memória";
+            diagnósticoDeMemóriaToolStripMenuItem.Click += diagnósticoDeMemóriaToolStripMenuItem_Click;
+            // 
+            // backupDeDriversToolStripMenuItem
+            // 
+            backupDeDriversToolStripMenuItem.Name = "backupDeDriversToolStripMenuItem";
+            backupDeDriversToolStripMenuItem.Size = new Size(236, 22);
+            backupDeDriversToolStripMenuItem.Text = "Backup de Drivers";
+            backupDeDriversToolStripMenuItem.Click += backupDeDriversToolStripMenuItem_Click;
+            // 
+            // pontoDeRestauroToolStripMenuItem
+            // 
+            pontoDeRestauroToolStripMenuItem.Name = "pontoDeRestauroToolStripMenuItem";
+            pontoDeRestauroToolStripMenuItem.Size = new Size(236, 22);
+            pontoDeRestauroToolStripMenuItem.Text = "Ponto de Restauro";
+            pontoDeRestauroToolStripMenuItem.Click += pontoDeRestauroToolStripMenuItem_Click;
+            // 
+            // manutençãoDoWindowsToolStripMenuItem
+            // 
+            manutençãoDoWindowsToolStripMenuItem.Name = "manutençãoDoWindowsToolStripMenuItem";
+            manutençãoDoWindowsToolStripMenuItem.Size = new Size(236, 22);
+            manutençãoDoWindowsToolStripMenuItem.Text = "Manutenção do Windows";
+            manutençãoDoWindowsToolStripMenuItem.Click += manutençãoDoWindowsToolStripMenuItem_Click;
+            // 
             // Dashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -619,5 +651,9 @@
         private Label label11;
         private Label label12;
         private Label label13;
+        private ToolStripMenuItem diagnósticoDeMemóriaToolStripMenuItem;
+        private ToolStripMenuItem backupDeDriversToolStripMenuItem;
+        private ToolStripMenuItem pontoDeRestauroToolStripMenuItem;
+        private ToolStripMenuItem manutençãoDoWindowsToolStripMenuItem;
     }
 }

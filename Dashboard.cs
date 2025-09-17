@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.DirectoryServices.ActiveDirectory;
+using System.IO.Compression;
 using System.Management;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -404,6 +405,145 @@ namespace Ferramenta_IT
                 RunCommandAsAdmin(command, successMessage, errorMessage);
             }
         }
+
+        private void diagnósticoDeMemóriaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MessageBox.Show("A ferramenta de Diagnóstico de Memória do Windows será iniciada." + Environment.NewLine + "Este processo pode exigir privilégios de administrador.", "Diagnóstico de Memória", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                ProcessStartInfo psi = new ProcessStartInfo("mdsched.exe")
+                {
+                    Verb = "runas", // Solicita privilégios de administrador
+                    UseShellExecute = true,
+                    CreateNoWindow = false
+                };
+
+                Process.Start(psi);
+            }
+            catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223) // A operação foi cancelada pelo utilizador
+            {
+                MessageBox.Show("A operação foi cancelada pelo utilizador.", "Cancelado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocorreu um erro ao tentar iniciar o Diagnóstico de Memória: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void backupDeDriversToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog())
+            {
+                saveFileDialog.Filter = "ZIP file (*.zip)|*.zip";
+                saveFileDialog.Title = "Guardar Backup de Drivers";
+                saveFileDialog.FileName = $"Backup_Drivers_{Environment.MachineName}_{DateTime.Now:yyyyMMdd}.zip";
+
+                if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return; // Utilizador cancelou
+                }
+
+                string tempExportPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+                Directory.CreateDirectory(tempExportPath);
+
+                try
+                {
+                    MessageBox.Show("A exportar os drivers do sistema. Este processo pode demorar alguns minutos e requer privilégios de administrador.", "Backup de Drivers", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    string pnputilPath = "pnputil.exe";
+                    // Se a aplicação for 32-bit a correr num SO 64-bit, usar o caminho Sysnative para evitar o redirecionamento de ficheiros.
+                    if (Environment.Is64BitOperatingSystem && !Environment.Is64BitProcess)
+                    {
+                        pnputilPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Sysnative", "pnputil.exe");
+                    }
+
+                    string command = $"{pnputilPath} /export-driver * \"{tempExportPath}\"";
+                    string output = RunCommandAndGetOutput(command);
+
+                    if (output.StartsWith("Comando falhou"))
+                    {
+                        MessageBox.Show(output, "Erro ao Exportar Drivers", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Criar o ficheiro ZIP
+                    if (File.Exists(saveFileDialog.FileName))
+                    {
+                        File.Delete(saveFileDialog.FileName);
+                    }
+                    ZipFile.CreateFromDirectory(tempExportPath, saveFileDialog.FileName);
+
+                    MessageBox.Show($"Backup de drivers criado com sucesso em:\n{saveFileDialog.FileName}", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ocorreu um erro durante o backup dos drivers: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    // Limpar a pasta temporária
+                    if (Directory.Exists(tempExportPath))
+                    {
+                        Directory.Delete(tempExportPath, true);
+                    }
+                }
+            }
+        }
+
+        private void pontoDeRestauroToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Tem a certeza que pretende criar um ponto de restauro do sistema?" + Environment.NewLine + "Esta ação pode demorar alguns minutos e requer privilégios de administrador.", "Criar Ponto de Restauro", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                string command = "/c powershell -command \"Checkpoint-Computer -Description 'Ponto_Restauracao_TI' -RestorePointType 'MODIFY_SETTINGS'\"";
+                string successMessage = "O ponto de restauro 'Ponto_Restauracao_TI' foi criado com sucesso.";
+                string errorMessage = "Ocorreu um erro ao criar o ponto de restauro." + Environment.NewLine + "Verifique se a Proteção do Sistema está ativada para a drive C:.";
+
+                RunCommandAsAdmin(command, successMessage, errorMessage);
+            }
+        }
+
+        private void manutençãoDoWindowsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Esta operação irá executar uma sequência de comandos de manutenção:" + Environment.NewLine + "1. sfc /scannow" + Environment.NewLine + "2. DISM /Online /Cleanup-Image /RestoreHealth" + Environment.NewLine + Environment.NewLine + "Este processo pode demorar bastante tempo, requer uma ligação à internet e privilégios de administrador." + Environment.NewLine + "Deseja continuar?", "Manutenção Completa do Windows", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                try
+                {
+                    // 1. Executar sfc /scannow
+                    RunSfcScannow();
+
+                    // 2. Executar DISM
+                    MessageBox.Show("A verificação SFC foi concluída. A seguir, a ferramenta DISM será iniciada numa nova janela." + Environment.NewLine + "Por favor, aguarde a conclusão do processo.", "Manutenção do Windows (DISM)", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", "/c DISM /Online /Cleanup-Image /RestoreHealth")
+                    {
+                        Verb = "runas", // Solicita privilégios de administrador
+                        UseShellExecute = true,
+                        CreateNoWindow = false // Mostra a janela da consola para o utilizador ver o progresso
+                    };
+
+                    Process process = Process.Start(psi);
+                    process.WaitForExit();
+
+                    if (process.ExitCode == 0)
+                    {
+                        MessageBox.Show("A operação DISM foi concluída com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"A operação DISM terminou com um código de erro: {process.ExitCode}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223) // A operação foi cancelada pelo utilizador
+                {
+                    MessageBox.Show("A operação foi cancelada pelo utilizador.", "Cancelado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ocorreu um erro durante a manutenção: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
         #endregion
 
         #region Utilizador
@@ -786,6 +926,21 @@ namespace Ferramenta_IT
             }
         }
 
+        private int RunCommand(string command)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", command)
+            {
+                Verb = "runas", // Request administrator privileges
+                UseShellExecute = true,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+
+            Process process = Process.Start(psi);
+            process.WaitForExit();
+            return process.ExitCode;
+        }
+
         private void RunCommandAsAdmin(string command, string successMessage, string errorMessage)
         {
             try
@@ -856,19 +1011,45 @@ namespace Ferramenta_IT
             return output;
         }
 
-        private int RunCommand(string command)
+        private string RunCommandAndGetOutput(string command, int[] successExitCodes = null)
         {
-            ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", command)
+            if (successExitCodes == null)
             {
-                Verb = "runas", // Request administrator privileges
-                UseShellExecute = true,
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
+                successExitCodes = new[] { 0 };
+            }
 
-            Process process = Process.Start(psi);
-            process.WaitForExit();
-            return process.ExitCode;
+            string output = "";
+            try
+            {
+                string tempOutputFile = Path.GetTempFileName();
+                ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", $"/c {command} > \"{tempOutputFile}\" 2>&1")
+                {
+                    Verb = "runas", // Request administrator privileges
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                Process process = Process.Start(psi);
+                process.WaitForExit();
+
+                output = File.ReadAllText(tempOutputFile);
+                File.Delete(tempOutputFile);
+
+                if (!successExitCodes.Contains(process.ExitCode))
+                {
+                    return $"Comando falhou com código de saída: {process.ExitCode}\n{output}";
+                }
+            }
+            catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223) // Operation was canceled by the user
+            {
+                return "A operação foi cancelada pelo utilizador.";
+            }
+            catch (Exception ex)
+            {
+                return $"Erro ao executar o comando: {ex.Message}";
+            }
+            return output;
         }
 
         private string ShowSelectDialog(string NomeOpcao, string TextoOpcao, List<string> Opcoes)
