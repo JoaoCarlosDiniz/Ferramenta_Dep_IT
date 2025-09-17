@@ -86,6 +86,11 @@ namespace IT
             Actualizar_DashBoard();
         }
 
+        private void btActualiza_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            Actualizar_DashBoard();
+        }
+
         private void Actualizar_DashBoard()
         {
             // Nome do PC
@@ -570,6 +575,102 @@ namespace IT
                 RunCommandAsAdmin(command, successMessage, errorMessage);
             }
         }
+
+        private void btCheckRAM_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                MessageBox.Show("A ferramenta de Diagnóstico de Memória do Windows será iniciada." + Environment.NewLine + "Este processo pode exigir privilégios de administrador.", "Diagnóstico de Memória", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                ProcessStartInfo psi = new ProcessStartInfo("mdsched.exe")
+                {
+                    Verb = "runas", // Solicita privilégios de administrador
+                    UseShellExecute = true,
+                    CreateNoWindow = false
+                };
+
+                Process.Start(psi);
+            }
+            catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223) // A operação foi cancelada pelo utilizador
+            {
+                MessageBox.Show("A operação foi cancelada pelo utilizador.", "Cancelado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocorreu um erro ao tentar iniciar o Diagnóstico de Memória: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btBackupDRV_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                MessageBox.Show("A listar os drivers do sistema. Este processo pode demorar alguns momentos.", "Listar Drivers", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                string command = "/c pnputil /enum-drivers";
+                string output = RunCommandAndGetOutput(command);
+
+                ShowOutputDialog("Lista de Drivers Instalados", output);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocorreu um erro ao listar os drivers: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btCriarPontoRestauro_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (MessageBox.Show("Tem a certeza que pretende criar um ponto de restauro do sistema?" + Environment.NewLine + "Esta ação pode demorar alguns minutos e requer privilégios de administrador.", "Criar Ponto de Restauro", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                string command = "/c powershell -command \"Checkpoint-Computer -Description 'Ponto_Restauracao_TI' -RestorePointType 'MODIFY_SETTINGS'\"";
+                string successMessage = "O ponto de restauro 'Ponto_Restauracao_TI' foi criado com sucesso.";
+                string errorMessage = "Ocorreu um erro ao criar o ponto de restauro." + Environment.NewLine + "Verifique se a Proteção do Sistema está ativada para a drive C:.";
+
+                RunCommandAsAdmin(command, successMessage, errorMessage);
+            }
+        }
+
+        private void btManutencaoWIN_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (MessageBox.Show("Esta operação irá executar uma sequência de comandos de manutenção:" + Environment.NewLine + "1. sfc /scannow" + Environment.NewLine + "2. DISM /Online /Cleanup-Image /RestoreHealth" + Environment.NewLine + Environment.NewLine + "Este processo pode demorar bastante tempo, requer uma ligação à internet e privilégios de administrador." + Environment.NewLine + "Deseja continuar?", "Manutenção Completa do Windows", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                try
+                {
+                    // 1. Executar sfc /scannow
+                    RunSfcScannow();
+
+                    // 2. Executar DISM
+                    MessageBox.Show("A verificação SFC foi concluída. A seguir, a ferramenta DISM será iniciada numa nova janela." + Environment.NewLine + "Por favor, aguarde a conclusão do processo.", "Manutenção do Windows (DISM)", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", "/c DISM /Online /Cleanup-Image /RestoreHealth")
+                    {
+                        Verb = "runas", // Solicita privilégios de administrador
+                        UseShellExecute = true,
+                        CreateNoWindow = false // Mostra a janela da consola para o utilizador ver o progresso
+                    };
+
+                    Process process = Process.Start(psi);
+                    process.WaitForExit();
+
+                    if (process.ExitCode == 0)
+                    {
+                        MessageBox.Show("A operação DISM foi concluída com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"A operação DISM terminou com um código de erro: {process.ExitCode}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223) // A operação foi cancelada pelo utilizador
+                {
+                    MessageBox.Show("A operação foi cancelada pelo utilizador.", "Cancelado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ocorreu um erro durante a manutenção: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
         #endregion
 
         #region Utilizador
@@ -901,6 +1002,29 @@ namespace IT
                 prompt.AcceptButton = confirmation;
 
                 return prompt.ShowDialog() == DialogResult.OK ? comboBox.SelectedItem.ToString() : string.Empty;
+            }
+        }
+
+        private void ShowOutputDialog(string title, string content)
+        {
+            using (DevExpress.XtraEditors.XtraForm outputForm = new DevExpress.XtraEditors.XtraForm())
+            {
+                outputForm.Width = 800;
+                outputForm.Height = 600;
+                outputForm.Text = title;
+                outputForm.MaximizeBox = false;
+                outputForm.StartPosition = FormStartPosition.CenterScreen;
+                outputForm.IconOptions.Icon = this.IconOptions.Icon;
+                outputForm.IconOptions.SvgImage = this.IconOptions.SvgImage;
+
+                DevExpress.XtraEditors.MemoEdit memoEdit = new DevExpress.XtraEditors.MemoEdit();
+                memoEdit.Dock = DockStyle.Fill;
+                memoEdit.Text = content;
+                memoEdit.Properties.ReadOnly = true;
+                memoEdit.Font = new Font("Consolas", 9.75F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+
+                outputForm.Controls.Add(memoEdit);
+                outputForm.ShowDialog(this);
             }
         }
         #endregion

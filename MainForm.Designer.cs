@@ -29,6 +29,24 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip3 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem3 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip4 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem4 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip5 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem5 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip6 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem6 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip7 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem7 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip8 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem8 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip9 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem9 = new DevExpress.Utils.ToolTipItem();
             DevExpress.Utils.SuperToolTip superToolTip10 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem10 = new DevExpress.Utils.ToolTipItem();
             DevExpress.Utils.SuperToolTip superToolTip11 = new DevExpress.Utils.SuperToolTip();
@@ -37,28 +55,18 @@
             DevExpress.Utils.ToolTipItem toolTipItem12 = new DevExpress.Utils.ToolTipItem();
             DevExpress.Utils.SuperToolTip superToolTip13 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem13 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.SuperToolTip superToolTip14 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem14 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.SuperToolTip superToolTip15 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem15 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.SuperToolTip superToolTip16 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem16 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.SuperToolTip superToolTip17 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem17 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.Utils.SuperToolTip superToolTip18 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem18 = new DevExpress.Utils.ToolTipItem();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange13 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange14 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange15 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange16 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange17 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange18 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange19 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange20 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange21 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange22 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange23 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
-            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange24 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange1 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange2 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange3 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange4 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange5 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange6 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange7 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange8 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange9 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange10 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange11 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
+            DevExpress.XtraGauges.Core.Model.ArcScaleRange arcScaleRange12 = new DevExpress.XtraGauges.Core.Model.ArcScaleRange();
             ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
             btDominio_Teste = new DevExpress.XtraBars.BarButtonItem();
             btWindows_Teste = new DevExpress.XtraBars.BarButtonItem();
@@ -70,6 +78,11 @@
             btCorreccaoAdmin = new DevExpress.XtraBars.BarButtonItem();
             ckEstilo = new DevExpress.XtraBars.BarCheckItem();
             btDashBoardRefresh = new DevExpress.XtraBars.BarButtonItem();
+            btCheckRAM = new DevExpress.XtraBars.BarButtonItem();
+            btBackupDRV = new DevExpress.XtraBars.BarButtonItem();
+            btCriarPontoRestauro = new DevExpress.XtraBars.BarButtonItem();
+            btManutencaoWIN = new DevExpress.XtraBars.BarButtonItem();
+            btActualiza = new DevExpress.XtraBars.BarButtonItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             rbDominio = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             rbWindows = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -181,10 +194,10 @@
             ribbonControl1.AllowMinimizeRibbon = false;
             ribbonControl1.AllowTrimPageText = false;
             ribbonControl1.ExpandCollapseItem.Id = 0;
-            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, btDominio_Teste, btWindows_Teste, btUtilizador_Teste, btRede_Teste, btResetPool, btResolveRDC, btFixTime, btCorreccaoAdmin, ckEstilo, btDashBoardRefresh });
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, btDominio_Teste, btWindows_Teste, btUtilizador_Teste, btRede_Teste, btResetPool, btResolveRDC, btFixTime, btCorreccaoAdmin, ckEstilo, btDashBoardRefresh, btCheckRAM, btBackupDRV, btCriarPontoRestauro, btManutencaoWIN, btActualiza });
             ribbonControl1.Location = new Point(0, 0);
             ribbonControl1.Margin = new Padding(4, 3, 4, 3);
-            ribbonControl1.MaxItemId = 11;
+            ribbonControl1.MaxItemId = 16;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.OptionsExpandCollapseMenu.EnableExpandCollapseMenu = DevExpress.Utils.DefaultBoolean.False;
             ribbonControl1.OptionsExpandCollapseMenu.ShowQuickAccessToolbarItem = DevExpress.Utils.DefaultBoolean.False;
@@ -193,6 +206,7 @@
             ribbonControl1.OptionsSearchMenu.UseCustomRibbonSearch = DevExpress.Utils.DefaultBoolean.False;
             ribbonControl1.OptionsStubGlyphs.AllowStubGlyphs = DevExpress.Utils.DefaultBoolean.False;
             ribbonControl1.PageHeaderItemLinks.Add(ckEstilo);
+            ribbonControl1.PageHeaderItemLinks.Add(btActualiza, true);
             ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
             ribbonControl1.ShowApplicationButton = DevExpress.Utils.DefaultBoolean.False;
             ribbonControl1.ShowDisplayOptionsMenuButton = DevExpress.Utils.DefaultBoolean.False;
@@ -213,9 +227,9 @@
             btDominio_Teste.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btDominio_Teste.ImageOptions.SvgImage");
             btDominio_Teste.Name = "btDominio_Teste";
             btDominio_Teste.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            toolTipItem10.Text = "Aqui verifica se o PC está no Dominio e caso não esteja adiciona-o.";
-            superToolTip10.Items.Add(toolTipItem10);
-            btDominio_Teste.SuperTip = superToolTip10;
+            toolTipItem1.Text = "Aqui verifica se o PC está no Dominio e caso não esteja adiciona-o.";
+            superToolTip1.Items.Add(toolTipItem1);
+            btDominio_Teste.SuperTip = superToolTip1;
             btDominio_Teste.ItemClick += btDominio_Teste_ItemClick;
             // 
             // btWindows_Teste
@@ -225,9 +239,9 @@
             btWindows_Teste.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btWindows_Teste.ImageOptions.SvgImage");
             btWindows_Teste.Name = "btWindows_Teste";
             btWindows_Teste.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            toolTipItem11.Text = "Executa a Limpeza de arquivos temporários, Verificação de Discos com o CHKDSK e SFC ScanNow";
-            superToolTip11.Items.Add(toolTipItem11);
-            btWindows_Teste.SuperTip = superToolTip11;
+            toolTipItem2.Text = "Executa a Limpeza de arquivos temporários, Verificação de Discos com o CHKDSK e SFC ScanNow";
+            superToolTip2.Items.Add(toolTipItem2);
+            btWindows_Teste.SuperTip = superToolTip2;
             btWindows_Teste.ItemClick += btWindows_Teste_ItemClick;
             // 
             // btUtilizador_Teste
@@ -237,9 +251,9 @@
             btUtilizador_Teste.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btUtilizador_Teste.ImageOptions.SvgImage");
             btUtilizador_Teste.Name = "btUtilizador_Teste";
             btUtilizador_Teste.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            toolTipItem12.Text = "Atualiza aplicativos com Winget";
-            superToolTip12.Items.Add(toolTipItem12);
-            btUtilizador_Teste.SuperTip = superToolTip12;
+            toolTipItem3.Text = "Atualiza aplicativos com Winget";
+            superToolTip3.Items.Add(toolTipItem3);
+            btUtilizador_Teste.SuperTip = superToolTip3;
             btUtilizador_Teste.ItemClick += btUtilizador_Teste_ItemClick;
             // 
             // btRede_Teste
@@ -249,9 +263,9 @@
             btRede_Teste.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btRede_Teste.ImageOptions.SvgImage");
             btRede_Teste.Name = "btRede_Teste";
             btRede_Teste.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            toolTipItem13.Text = "Executa os seguintes testes:\r\n- Testar comunicação com DC\r\n- Limpar cache de DNS\r\n- Limpar cache ARP\r\n- Limpar NetBIOS";
-            superToolTip13.Items.Add(toolTipItem13);
-            btRede_Teste.SuperTip = superToolTip13;
+            toolTipItem4.Text = "Executa os seguintes testes:\r\n- Testar comunicação com DC\r\n- Limpar cache de DNS\r\n- Limpar cache ARP\r\n- Limpar NetBIOS";
+            superToolTip4.Items.Add(toolTipItem4);
+            btRede_Teste.SuperTip = superToolTip4;
             btRede_Teste.ItemClick += btRede_Teste_ItemClick;
             // 
             // btResetPool
@@ -261,9 +275,9 @@
             btResetPool.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btResetPool.ImageOptions.SvgImage");
             btResetPool.Name = "btResetPool";
             btResetPool.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            toolTipItem14.Text = "Reinicia o Serviço de Impressão e limpa os trabalhos em Cache";
-            superToolTip14.Items.Add(toolTipItem14);
-            btResetPool.SuperTip = superToolTip14;
+            toolTipItem5.Text = "Reinicia o Serviço de Impressão e limpa os trabalhos em Cache";
+            superToolTip5.Items.Add(toolTipItem5);
+            btResetPool.SuperTip = superToolTip5;
             btResetPool.ItemClick += btResetPool_ItemClick;
             // 
             // btResolveRDC
@@ -273,9 +287,9 @@
             btResolveRDC.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btResolveRDC.ImageOptions.SvgImage");
             btResolveRDC.Name = "btResolveRDC";
             btResolveRDC.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            toolTipItem15.Text = "Modifica o registo do Windows para corrigir uma vulnerabilidade de segurança do RDC (CredSSP)";
-            superToolTip15.Items.Add(toolTipItem15);
-            btResolveRDC.SuperTip = superToolTip15;
+            toolTipItem6.Text = "Modifica o registo do Windows para corrigir uma vulnerabilidade de segurança do RDC (CredSSP)";
+            superToolTip6.Items.Add(toolTipItem6);
+            btResolveRDC.SuperTip = superToolTip6;
             btResolveRDC.ItemClick += btResolveRDC_ItemClick;
             // 
             // btFixTime
@@ -285,9 +299,9 @@
             btFixTime.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btFixTime.ImageOptions.SvgImage");
             btFixTime.Name = "btFixTime";
             btFixTime.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            toolTipItem16.Text = "Escolhe qual o Servidor/IP que vai definir o fuso e distribuição da Data/Hora";
-            superToolTip16.Items.Add(toolTipItem16);
-            btFixTime.SuperTip = superToolTip16;
+            toolTipItem7.Text = "Escolhe qual o Servidor/IP que vai definir o fuso e distribuição da Data/Hora";
+            superToolTip7.Items.Add(toolTipItem7);
+            btFixTime.SuperTip = superToolTip7;
             btFixTime.ItemClick += btFixTime_ItemClick;
             // 
             // btCorreccaoAdmin
@@ -297,9 +311,9 @@
             btCorreccaoAdmin.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btCorreccaoAdmin.ImageOptions.SvgImage");
             btCorreccaoAdmin.Name = "btCorreccaoAdmin";
             btCorreccaoAdmin.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            toolTipItem17.Text = "Redefine a senha da conta do computador no domínio através do servidor";
-            superToolTip17.Items.Add(toolTipItem17);
-            btCorreccaoAdmin.SuperTip = superToolTip17;
+            toolTipItem8.Text = "Redefine a senha da conta do computador no domínio através do servidor";
+            superToolTip8.Items.Add(toolTipItem8);
+            btCorreccaoAdmin.SuperTip = superToolTip8;
             btCorreccaoAdmin.ItemClick += btCorreccaoAdmin_ItemClick;
             // 
             // ckEstilo
@@ -308,9 +322,9 @@
             ckEstilo.CheckBoxVisibility = DevExpress.XtraBars.CheckBoxVisibility.AfterText;
             ckEstilo.Id = 9;
             ckEstilo.Name = "ckEstilo";
-            toolTipItem18.Text = "Altera o tema da Aplicação entre Claro e Escuro.\r\nPor defeito inicia com o mesmo tema usado no Windows.";
-            superToolTip18.Items.Add(toolTipItem18);
-            ckEstilo.SuperTip = superToolTip18;
+            toolTipItem9.Text = "Altera o tema da Aplicação entre Claro e Escuro.\r\nPor defeito inicia com o mesmo tema usado no Windows.";
+            superToolTip9.Items.Add(toolTipItem9);
+            ckEstilo.SuperTip = superToolTip9;
             ckEstilo.CheckedChanged += ckEstilo_CheckedChanged;
             // 
             // btDashBoardRefresh
@@ -320,6 +334,62 @@
             btDashBoardRefresh.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btDashBoardRefresh.ImageOptions.SvgImage");
             btDashBoardRefresh.Name = "btDashBoardRefresh";
             btDashBoardRefresh.ItemClick += btDashBoardRefresh_ItemClick;
+            // 
+            // btCheckRAM
+            // 
+            btCheckRAM.Caption = "Diagnóstico de Memória";
+            btCheckRAM.Id = 11;
+            btCheckRAM.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btCheckRAM.ImageOptions.SvgImage");
+            btCheckRAM.Name = "btCheckRAM";
+            btCheckRAM.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            btCheckRAM.ItemClick += btCheckRAM_ItemClick;
+            // 
+            // btBackupDRV
+            // 
+            btBackupDRV.Caption = "Backup de Drivers";
+            btBackupDRV.Id = 12;
+            btBackupDRV.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btBackupDRV.ImageOptions.SvgImage");
+            btBackupDRV.Name = "btBackupDRV";
+            btBackupDRV.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            toolTipItem10.Text = "Faz um Backup de Drivers";
+            superToolTip10.Items.Add(toolTipItem10);
+            btBackupDRV.SuperTip = superToolTip10;
+            btBackupDRV.ItemClick += btBackupDRV_ItemClick;
+            // 
+            // btCriarPontoRestauro
+            // 
+            btCriarPontoRestauro.Caption = "Ponto de Restauro";
+            btCriarPontoRestauro.Id = 13;
+            btCriarPontoRestauro.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btCriarPontoRestauro.ImageOptions.SvgImage");
+            btCriarPontoRestauro.Name = "btCriarPontoRestauro";
+            btCriarPontoRestauro.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            toolTipItem11.Text = "Cria um novo Ponto de Restauro";
+            superToolTip11.Items.Add(toolTipItem11);
+            btCriarPontoRestauro.SuperTip = superToolTip11;
+            btCriarPontoRestauro.ItemClick += btCriarPontoRestauro_ItemClick;
+            // 
+            // btManutencaoWIN
+            // 
+            btManutencaoWIN.Caption = "Manutenção do Windows";
+            btManutencaoWIN.Id = 14;
+            btManutencaoWIN.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btManutencaoWIN.ImageOptions.SvgImage");
+            btManutencaoWIN.Name = "btManutencaoWIN";
+            btManutencaoWIN.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            toolTipItem12.Text = "Verificar e reparar ficheiros corruptos na imagem do sistema Windows";
+            superToolTip12.Items.Add(toolTipItem12);
+            btManutencaoWIN.SuperTip = superToolTip12;
+            btManutencaoWIN.ItemClick += btManutencaoWIN_ItemClick;
+            // 
+            // btActualiza
+            // 
+            btActualiza.Caption = "Actualizar";
+            btActualiza.Id = 15;
+            btActualiza.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btActualiza.ImageOptions.SvgImage");
+            btActualiza.Name = "btActualiza";
+            toolTipItem13.Text = "Actualizar o DashBoard";
+            superToolTip13.Items.Add(toolTipItem13);
+            btActualiza.SuperTip = superToolTip13;
+            btActualiza.ItemClick += btActualiza_ItemClick;
             // 
             // ribbonPage1
             // 
@@ -339,6 +409,10 @@
             // 
             rbWindows.ItemLinks.Add(btWindows_Teste);
             rbWindows.ItemLinks.Add(btResolveRDC);
+            rbWindows.ItemLinks.Add(btCheckRAM);
+            rbWindows.ItemLinks.Add(btBackupDRV);
+            rbWindows.ItemLinks.Add(btCriarPontoRestauro);
+            rbWindows.ItemLinks.Add(btManutencaoWIN);
             rbWindows.Name = "rbWindows";
             rbWindows.State = DevExpress.XtraBars.Ribbon.RibbonPageGroupState.Expanded;
             rbWindows.Text = "Windows";
@@ -365,6 +439,7 @@
             rbDashBoard.Name = "rbDashBoard";
             rbDashBoard.State = DevExpress.XtraBars.Ribbon.RibbonPageGroupState.Expanded;
             rbDashBoard.Text = "Opções";
+            rbDashBoard.Visible = false;
             // 
             // panelInfoPC
             // 
@@ -532,27 +607,27 @@
             ponteiroRAMClaro.Name = "scale1";
             ponteiroRAMClaro.RadiusX = 98F;
             ponteiroRAMClaro.RadiusY = 98F;
-            arcScaleRange13.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
-            arcScaleRange13.EndThickness = 14F;
-            arcScaleRange13.EndValue = 33F;
-            arcScaleRange13.Name = "Range0";
-            arcScaleRange13.ShapeOffset = 0F;
-            arcScaleRange13.StartThickness = 14F;
-            arcScaleRange14.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
-            arcScaleRange14.EndThickness = 14F;
-            arcScaleRange14.EndValue = 66F;
-            arcScaleRange14.Name = "Range1";
-            arcScaleRange14.ShapeOffset = 0F;
-            arcScaleRange14.StartThickness = 14F;
-            arcScaleRange14.StartValue = 33F;
-            arcScaleRange15.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
-            arcScaleRange15.EndThickness = 14F;
-            arcScaleRange15.EndValue = 100F;
-            arcScaleRange15.Name = "Range2";
-            arcScaleRange15.ShapeOffset = 0F;
-            arcScaleRange15.StartThickness = 14F;
-            arcScaleRange15.StartValue = 66F;
-            ponteiroRAMClaro.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] { arcScaleRange13, arcScaleRange14, arcScaleRange15 });
+            arcScaleRange1.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
+            arcScaleRange1.EndThickness = 14F;
+            arcScaleRange1.EndValue = 33F;
+            arcScaleRange1.Name = "Range0";
+            arcScaleRange1.ShapeOffset = 0F;
+            arcScaleRange1.StartThickness = 14F;
+            arcScaleRange2.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
+            arcScaleRange2.EndThickness = 14F;
+            arcScaleRange2.EndValue = 66F;
+            arcScaleRange2.Name = "Range1";
+            arcScaleRange2.ShapeOffset = 0F;
+            arcScaleRange2.StartThickness = 14F;
+            arcScaleRange2.StartValue = 33F;
+            arcScaleRange3.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
+            arcScaleRange3.EndThickness = 14F;
+            arcScaleRange3.EndValue = 100F;
+            arcScaleRange3.Name = "Range2";
+            arcScaleRange3.ShapeOffset = 0F;
+            arcScaleRange3.StartThickness = 14F;
+            arcScaleRange3.StartValue = 66F;
+            ponteiroRAMClaro.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] { arcScaleRange1, arcScaleRange2, arcScaleRange3 });
             ponteiroRAMClaro.StartAngle = -180F;
             ponteiroRAMClaro.Value = 30F;
             // 
@@ -634,21 +709,21 @@
             ponteiroRAMEscuro.Name = "scale1";
             ponteiroRAMEscuro.RadiusX = 95F;
             ponteiroRAMEscuro.RadiusY = 95F;
-            arcScaleRange16.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#09AC86");
-            arcScaleRange16.EndValue = 33F;
-            arcScaleRange16.Name = "Range0";
-            arcScaleRange16.ShapeOffset = 0F;
-            arcScaleRange17.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#CAB46E");
-            arcScaleRange17.EndValue = 66F;
-            arcScaleRange17.Name = "Range1";
-            arcScaleRange17.ShapeOffset = 0F;
-            arcScaleRange17.StartValue = 33F;
-            arcScaleRange18.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#C16268");
-            arcScaleRange18.EndValue = 100F;
-            arcScaleRange18.Name = "Range2";
-            arcScaleRange18.ShapeOffset = 0F;
-            arcScaleRange18.StartValue = 66F;
-            ponteiroRAMEscuro.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] { arcScaleRange16, arcScaleRange17, arcScaleRange18 });
+            arcScaleRange4.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#09AC86");
+            arcScaleRange4.EndValue = 33F;
+            arcScaleRange4.Name = "Range0";
+            arcScaleRange4.ShapeOffset = 0F;
+            arcScaleRange5.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#CAB46E");
+            arcScaleRange5.EndValue = 66F;
+            arcScaleRange5.Name = "Range1";
+            arcScaleRange5.ShapeOffset = 0F;
+            arcScaleRange5.StartValue = 33F;
+            arcScaleRange6.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#C16268");
+            arcScaleRange6.EndValue = 100F;
+            arcScaleRange6.Name = "Range2";
+            arcScaleRange6.ShapeOffset = 0F;
+            arcScaleRange6.StartValue = 66F;
+            ponteiroRAMEscuro.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] { arcScaleRange4, arcScaleRange5, arcScaleRange6 });
             ponteiroRAMEscuro.StartAngle = -180F;
             ponteiroRAMEscuro.Value = 22F;
             // 
@@ -740,27 +815,27 @@
             ponteiroDiscoClaro.Name = "scale1";
             ponteiroDiscoClaro.RadiusX = 98F;
             ponteiroDiscoClaro.RadiusY = 98F;
-            arcScaleRange19.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
-            arcScaleRange19.EndThickness = 14F;
-            arcScaleRange19.EndValue = 33F;
-            arcScaleRange19.Name = "Range0";
-            arcScaleRange19.ShapeOffset = 0F;
-            arcScaleRange19.StartThickness = 14F;
-            arcScaleRange20.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
-            arcScaleRange20.EndThickness = 14F;
-            arcScaleRange20.EndValue = 66F;
-            arcScaleRange20.Name = "Range1";
-            arcScaleRange20.ShapeOffset = 0F;
-            arcScaleRange20.StartThickness = 14F;
-            arcScaleRange20.StartValue = 33F;
-            arcScaleRange21.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
-            arcScaleRange21.EndThickness = 14F;
-            arcScaleRange21.EndValue = 100F;
-            arcScaleRange21.Name = "Range2";
-            arcScaleRange21.ShapeOffset = 0F;
-            arcScaleRange21.StartThickness = 14F;
-            arcScaleRange21.StartValue = 66F;
-            ponteiroDiscoClaro.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] { arcScaleRange19, arcScaleRange20, arcScaleRange21 });
+            arcScaleRange7.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#9EC968");
+            arcScaleRange7.EndThickness = 14F;
+            arcScaleRange7.EndValue = 33F;
+            arcScaleRange7.Name = "Range0";
+            arcScaleRange7.ShapeOffset = 0F;
+            arcScaleRange7.StartThickness = 14F;
+            arcScaleRange8.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#FED96D");
+            arcScaleRange8.EndThickness = 14F;
+            arcScaleRange8.EndValue = 66F;
+            arcScaleRange8.Name = "Range1";
+            arcScaleRange8.ShapeOffset = 0F;
+            arcScaleRange8.StartThickness = 14F;
+            arcScaleRange8.StartValue = 33F;
+            arcScaleRange9.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#EF8C75");
+            arcScaleRange9.EndThickness = 14F;
+            arcScaleRange9.EndValue = 100F;
+            arcScaleRange9.Name = "Range2";
+            arcScaleRange9.ShapeOffset = 0F;
+            arcScaleRange9.StartThickness = 14F;
+            arcScaleRange9.StartValue = 66F;
+            ponteiroDiscoClaro.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] { arcScaleRange7, arcScaleRange8, arcScaleRange9 });
             ponteiroDiscoClaro.StartAngle = -180F;
             ponteiroDiscoClaro.Value = 30F;
             // 
@@ -833,21 +908,21 @@
             ponteiroDiscoEscuro.Name = "scale1";
             ponteiroDiscoEscuro.RadiusX = 95F;
             ponteiroDiscoEscuro.RadiusY = 95F;
-            arcScaleRange22.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#09AC86");
-            arcScaleRange22.EndValue = 33F;
-            arcScaleRange22.Name = "Range0";
-            arcScaleRange22.ShapeOffset = 0F;
-            arcScaleRange23.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#CAB46E");
-            arcScaleRange23.EndValue = 66F;
-            arcScaleRange23.Name = "Range1";
-            arcScaleRange23.ShapeOffset = 0F;
-            arcScaleRange23.StartValue = 33F;
-            arcScaleRange24.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#C16268");
-            arcScaleRange24.EndValue = 100F;
-            arcScaleRange24.Name = "Range2";
-            arcScaleRange24.ShapeOffset = 0F;
-            arcScaleRange24.StartValue = 66F;
-            ponteiroDiscoEscuro.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] { arcScaleRange22, arcScaleRange23, arcScaleRange24 });
+            arcScaleRange10.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#09AC86");
+            arcScaleRange10.EndValue = 33F;
+            arcScaleRange10.Name = "Range0";
+            arcScaleRange10.ShapeOffset = 0F;
+            arcScaleRange11.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#CAB46E");
+            arcScaleRange11.EndValue = 66F;
+            arcScaleRange11.Name = "Range1";
+            arcScaleRange11.ShapeOffset = 0F;
+            arcScaleRange11.StartValue = 33F;
+            arcScaleRange12.AppearanceRange.ContentBrush = new DevExpress.XtraGauges.Core.Drawing.SolidBrushObject("Color:#C16268");
+            arcScaleRange12.EndValue = 100F;
+            arcScaleRange12.Name = "Range2";
+            arcScaleRange12.ShapeOffset = 0F;
+            arcScaleRange12.StartValue = 66F;
+            ponteiroDiscoEscuro.Ranges.AddRange(new DevExpress.XtraGauges.Core.Model.IRange[] { arcScaleRange10, arcScaleRange11, arcScaleRange12 });
             ponteiroDiscoEscuro.StartAngle = -180F;
             ponteiroDiscoEscuro.Value = 22F;
             // 
@@ -1106,7 +1181,6 @@
             Controls.Add(panelInfoRAM);
             Controls.Add(panelInfoPC);
             Controls.Add(ribbonControl1);
-            Font = new Font("Calibri", 9.75F);
             IconOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("MainForm.IconOptions.SvgImage");
             Margin = new Padding(4, 3, 4, 3);
             MaximizeBox = false;
@@ -1244,5 +1318,10 @@
         private DevExpress.XtraEditors.LabelControl labelControl18;
         private DevExpress.XtraEditors.LabelControl labelControl19;
         private DevExpress.XtraEditors.LabelControl labelControl20;
+        private DevExpress.XtraBars.BarButtonItem btCheckRAM;
+        private DevExpress.XtraBars.BarButtonItem btBackupDRV;
+        private DevExpress.XtraBars.BarButtonItem btCriarPontoRestauro;
+        private DevExpress.XtraBars.BarButtonItem btManutencaoWIN;
+        private DevExpress.XtraBars.BarButtonItem btActualiza;
     }
 }
