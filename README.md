@@ -75,7 +75,11 @@ O ficheiro `App.config` deve conter:
     - Lista discos, tipo, FS, espaço total/livre.
     - Oferece CHKDSK C: /f (agendado para próximo boot).
     - Oferece SFC /SCANNOW (execução imediata).
-
+- Diagnostico de Memoria
+- Backup de Drivers
+- Criar Ponto de Restauro
+- Manutenção do Windows
+  
 ### 🔐 RDC – CredSSP
 - Aplica correção no Registro:  
     - `AllowEncryptionOracle = 2`  
