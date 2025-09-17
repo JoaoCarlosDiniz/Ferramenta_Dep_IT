@@ -79,7 +79,8 @@ O ficheiro `App.config` deve conter:
 - Backup de Drivers
 - Criar Ponto de Restauro
 - Manutenção do Windows
-  
+    - Oferece SFC /SCANNOW e de seguida o DISM /Online /Cleanup-Image /RestoreHealth (execução imediata).
+
 ### 🔐 RDC – CredSSP
 - Aplica correção no Registro:  
     - `AllowEncryptionOracle = 2`  
