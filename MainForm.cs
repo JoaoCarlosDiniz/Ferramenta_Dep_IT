@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.DirectoryServices.ActiveDirectory;
 using System.IO;
+using System.IO.Compression;
 using System.Management;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -603,18 +604,61 @@ namespace IT
 
         private void btBackupDRV_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            try
+            using (System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog())
             {
-                MessageBox.Show("A listar os drivers do sistema. Este processo pode demorar alguns momentos.", "Listar Drivers", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                saveFileDialog.Filter = "ZIP file (*.zip)|*.zip";
+                saveFileDialog.Title = "Guardar Backup de Drivers";
+                saveFileDialog.FileName = $"Backup_Drivers_{Environment.MachineName}_{DateTime.Now:yyyyMMdd}.zip";
 
-                string command = "/c pnputil /enum-drivers";
-                string output = RunCommandAndGetOutput(command);
+                if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return; // Utilizador cancelou
+                }
 
-                ShowOutputDialog("Lista de Drivers Instalados", output);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ocorreu um erro ao listar os drivers: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string tempExportPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
+                Directory.CreateDirectory(tempExportPath);
+
+                try
+                {
+                    MessageBox.Show("A exportar os drivers do sistema. Este processo pode demorar alguns minutos e requer privilégios de administrador.", "Backup de Drivers", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    string pnputilPath = "pnputil.exe";
+                    // Se a aplicação for 32-bit a correr num SO 64-bit, usar o caminho Sysnative para evitar o redirecionamento de ficheiros.
+                    if (Environment.Is64BitOperatingSystem && !Environment.Is64BitProcess)
+                    {
+                        pnputilPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Sysnative", "pnputil.exe");
+                    }
+
+                    string command = $"{pnputilPath} /export-driver * \"{tempExportPath}\"";
+                    string output = RunCommandAndGetOutput(command);
+
+                    if (output.StartsWith("Comando falhou"))
+                    {
+                        MessageBox.Show(output, "Erro ao Exportar Drivers", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Criar o ficheiro ZIP
+                    if (File.Exists(saveFileDialog.FileName))
+                    {
+                        File.Delete(saveFileDialog.FileName);
+                    }
+                    ZipFile.CreateFromDirectory(tempExportPath, saveFileDialog.FileName);
+
+                    MessageBox.Show($"Backup de drivers criado com sucesso em:\n{saveFileDialog.FileName}", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ocorreu um erro durante o backup dos drivers: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    // Limpar a pasta temporária
+                    if (Directory.Exists(tempExportPath))
+                    {
+                        Directory.Delete(tempExportPath, true);
+                    }
+                }
             }
         }
 
@@ -949,6 +993,47 @@ namespace IT
                 File.Delete(tempOutputFile);
 
                 if (process.ExitCode != 0)
+                {
+                    return $"Comando falhou com código de saída: {process.ExitCode}\n{output}";
+                }
+            }
+            catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223) // Operation was canceled by the user
+            {
+                return "A operação foi cancelada pelo utilizador.";
+            }
+            catch (Exception ex)
+            {
+                return $"Erro ao executar o comando: {ex.Message}";
+            }
+            return output;
+        }
+
+        private string RunCommandAndGetOutput(string command, int[] successExitCodes = null)
+        {
+            if (successExitCodes == null)
+            {
+                successExitCodes = new[] { 0 };
+            }
+
+            string output = "";
+            try
+            {
+                string tempOutputFile = Path.GetTempFileName();
+                ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", $"/c {command} > \"{tempOutputFile}\" 2>&1")
+                {
+                    Verb = "runas", // Request administrator privileges
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                Process process = Process.Start(psi);
+                process.WaitForExit();
+
+                output = File.ReadAllText(tempOutputFile);
+                File.Delete(tempOutputFile);
+
+                if (!successExitCodes.Contains(process.ExitCode))
                 {
                     return $"Comando falhou com código de saída: {process.ExitCode}\n{output}";
                 }
