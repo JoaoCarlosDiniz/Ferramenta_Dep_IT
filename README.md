@@ -141,15 +141,21 @@ O ficheiro `App.config` deve conter:
 
 ---
 
-# 🎨 Tema Claro
-<img width="963" height="626" alt="image" src="https://github.com/user-attachments/assets/5f172f0c-136b-41d8-bb8d-8035481bed23" />
+# 🎨 Tema Claro - Versão Original
+<img width="1200" height="900" alt="image" src="https://github.com/user-attachments/assets/73863ae7-78dd-47bc-baff-5845c981a7f6" />
 
 <img width="800" height="398" alt="image" src="https://github.com/user-attachments/assets/ed6dbfa2-11b2-4f20-9784-12b0562e38d2" />
 
-# 🎨 Tema Escuro
-<img width="963" height="626" alt="image" src="https://github.com/user-attachments/assets/fae02a02-8c1d-4526-895a-fe93e3129551" />
+# 🎨 Tema Claro - Versão Simplificada
+<img width="802" height="482" alt="image" src="https://github.com/user-attachments/assets/7538c969-f122-4878-a070-0a0251453a43" />
+
+# 🎨 Tema Escuro - Versão Original
+<img width="1200" height="900" alt="image" src="https://github.com/user-attachments/assets/fb6029ae-4729-499e-9e01-269fbde24723" />
 
 <img width="800" height="398" alt="image" src="https://github.com/user-attachments/assets/85c9c564-8805-43f9-888b-157f82edabc7" />
+
+# 🎨 Tema Escuro - Versão Simplificada
+<img width="802" height="482" alt="image" src="https://github.com/user-attachments/assets/1fccbdf3-3eed-449d-8455-69b0696c049c" />
 
 ---
 
