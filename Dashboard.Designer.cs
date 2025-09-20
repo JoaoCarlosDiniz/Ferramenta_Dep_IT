@@ -36,8 +36,13 @@
             windowsToolStripMenuItem = new ToolStripMenuItem();
             testeDeDiscoEWindowsToolStripMenuItem = new ToolStripMenuItem();
             correcãoDoErroRDCCredSSPToolStripMenuItem = new ToolStripMenuItem();
+            diagnósticoDeMemóriaToolStripMenuItem = new ToolStripMenuItem();
+            backupDeDriversToolStripMenuItem = new ToolStripMenuItem();
+            pontoDeRestauroToolStripMenuItem = new ToolStripMenuItem();
+            manutençãoDoWindowsToolStripMenuItem = new ToolStripMenuItem();
             utilizadorToolStripMenuItem = new ToolStripMenuItem();
             actualizarComWingetToolStripMenuItem = new ToolStripMenuItem();
+            desinstalarComWingetToolStripMenuItem = new ToolStripMenuItem();
             reiniciarServiçoDeImpressãoToolStripMenuItem = new ToolStripMenuItem();
             redeToolStripMenuItem = new ToolStripMenuItem();
             testeDeComunicaçãoEAcessosÀRedeToolStripMenuItem = new ToolStripMenuItem();
@@ -75,10 +80,13 @@
             label11 = new Label();
             label12 = new Label();
             label13 = new Label();
-            diagnósticoDeMemóriaToolStripMenuItem = new ToolStripMenuItem();
-            backupDeDriversToolStripMenuItem = new ToolStripMenuItem();
-            pontoDeRestauroToolStripMenuItem = new ToolStripMenuItem();
-            manutençãoDoWindowsToolStripMenuItem = new ToolStripMenuItem();
+            hostToolStripMenuItem = new ToolStripMenuItem();
+            desbloquearToolStripMenuItem = new ToolStripMenuItem();
+            bloqueioTotalToolStripMenuItem = new ToolStripMenuItem();
+            bloqueioTotalExceptoOGmailToolStripMenuItem = new ToolStripMenuItem();
+            bloqueioRedesSociaisToolStripMenuItem = new ToolStripMenuItem();
+            bloqueioStreamToolStripMenuItem = new ToolStripMenuItem();
+            bloqueioRedesSociaisEStreamToolStripMenuItem = new ToolStripMenuItem();
             barraMenu.SuspendLayout();
             InfoPC.SuspendLayout();
             InfoMemoria.SuspendLayout();
@@ -138,9 +146,37 @@
             correcãoDoErroRDCCredSSPToolStripMenuItem.Text = "Correcção do Erro RDC CredSSP";
             correcãoDoErroRDCCredSSPToolStripMenuItem.Click += correcãoDoErroRDCCredSSPToolStripMenuItem_Click;
             // 
+            // diagnósticoDeMemóriaToolStripMenuItem
+            // 
+            diagnósticoDeMemóriaToolStripMenuItem.Name = "diagnósticoDeMemóriaToolStripMenuItem";
+            diagnósticoDeMemóriaToolStripMenuItem.Size = new Size(236, 22);
+            diagnósticoDeMemóriaToolStripMenuItem.Text = "Diagnóstico de Memória";
+            diagnósticoDeMemóriaToolStripMenuItem.Click += diagnósticoDeMemóriaToolStripMenuItem_Click;
+            // 
+            // backupDeDriversToolStripMenuItem
+            // 
+            backupDeDriversToolStripMenuItem.Name = "backupDeDriversToolStripMenuItem";
+            backupDeDriversToolStripMenuItem.Size = new Size(236, 22);
+            backupDeDriversToolStripMenuItem.Text = "Backup de Drivers";
+            backupDeDriversToolStripMenuItem.Click += backupDeDriversToolStripMenuItem_Click;
+            // 
+            // pontoDeRestauroToolStripMenuItem
+            // 
+            pontoDeRestauroToolStripMenuItem.Name = "pontoDeRestauroToolStripMenuItem";
+            pontoDeRestauroToolStripMenuItem.Size = new Size(236, 22);
+            pontoDeRestauroToolStripMenuItem.Text = "Ponto de Restauro";
+            pontoDeRestauroToolStripMenuItem.Click += pontoDeRestauroToolStripMenuItem_Click;
+            // 
+            // manutençãoDoWindowsToolStripMenuItem
+            // 
+            manutençãoDoWindowsToolStripMenuItem.Name = "manutençãoDoWindowsToolStripMenuItem";
+            manutençãoDoWindowsToolStripMenuItem.Size = new Size(236, 22);
+            manutençãoDoWindowsToolStripMenuItem.Text = "Manutenção do Windows";
+            manutençãoDoWindowsToolStripMenuItem.Click += manutençãoDoWindowsToolStripMenuItem_Click;
+            // 
             // utilizadorToolStripMenuItem
             // 
-            utilizadorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { actualizarComWingetToolStripMenuItem, reiniciarServiçoDeImpressãoToolStripMenuItem });
+            utilizadorToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { actualizarComWingetToolStripMenuItem, desinstalarComWingetToolStripMenuItem, reiniciarServiçoDeImpressãoToolStripMenuItem });
             utilizadorToolStripMenuItem.Name = "utilizadorToolStripMenuItem";
             utilizadorToolStripMenuItem.Size = new Size(72, 20);
             utilizadorToolStripMenuItem.Text = "Utilizador";
@@ -152,6 +188,13 @@
             actualizarComWingetToolStripMenuItem.Text = "Actualizar com Winget";
             actualizarComWingetToolStripMenuItem.Click += actualizarComWingetToolStripMenuItem_Click;
             // 
+            // desinstalarComWingetToolStripMenuItem
+            // 
+            desinstalarComWingetToolStripMenuItem.Name = "desinstalarComWingetToolStripMenuItem";
+            desinstalarComWingetToolStripMenuItem.Size = new Size(242, 22);
+            desinstalarComWingetToolStripMenuItem.Text = "Desinstalar com Winget";
+            desinstalarComWingetToolStripMenuItem.Click += desinstalarComWingetToolStripMenuItem_Click;
+            // 
             // reiniciarServiçoDeImpressãoToolStripMenuItem
             // 
             reiniciarServiçoDeImpressãoToolStripMenuItem.Name = "reiniciarServiçoDeImpressãoToolStripMenuItem";
@@ -161,7 +204,7 @@
             // 
             // redeToolStripMenuItem
             // 
-            redeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { testeDeComunicaçãoEAcessosÀRedeToolStripMenuItem, correcçãoDoAdminToolStripMenuItem });
+            redeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { testeDeComunicaçãoEAcessosÀRedeToolStripMenuItem, correcçãoDoAdminToolStripMenuItem, hostToolStripMenuItem });
             redeToolStripMenuItem.Name = "redeToolStripMenuItem";
             redeToolStripMenuItem.Size = new Size(47, 20);
             redeToolStripMenuItem.Text = "Rede";
@@ -540,33 +583,54 @@
             label13.TabIndex = 19;
             label13.Text = "IP:";
             // 
-            // diagnósticoDeMemóriaToolStripMenuItem
+            // hostToolStripMenuItem
             // 
-            diagnósticoDeMemóriaToolStripMenuItem.Name = "diagnósticoDeMemóriaToolStripMenuItem";
-            diagnósticoDeMemóriaToolStripMenuItem.Size = new Size(236, 22);
-            diagnósticoDeMemóriaToolStripMenuItem.Text = "Diagnóstico de Memória";
-            diagnósticoDeMemóriaToolStripMenuItem.Click += diagnósticoDeMemóriaToolStripMenuItem_Click;
+            hostToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { desbloquearToolStripMenuItem, bloqueioTotalToolStripMenuItem, bloqueioTotalExceptoOGmailToolStripMenuItem, bloqueioRedesSociaisToolStripMenuItem, bloqueioStreamToolStripMenuItem, bloqueioRedesSociaisEStreamToolStripMenuItem });
+            hostToolStripMenuItem.Name = "hostToolStripMenuItem";
+            hostToolStripMenuItem.Size = new Size(293, 22);
+            hostToolStripMenuItem.Text = "Host";
             // 
-            // backupDeDriversToolStripMenuItem
+            // desbloquearToolStripMenuItem
             // 
-            backupDeDriversToolStripMenuItem.Name = "backupDeDriversToolStripMenuItem";
-            backupDeDriversToolStripMenuItem.Size = new Size(236, 22);
-            backupDeDriversToolStripMenuItem.Text = "Backup de Drivers";
-            backupDeDriversToolStripMenuItem.Click += backupDeDriversToolStripMenuItem_Click;
+            desbloquearToolStripMenuItem.Name = "desbloquearToolStripMenuItem";
+            desbloquearToolStripMenuItem.Size = new Size(254, 22);
+            desbloquearToolStripMenuItem.Text = "Desbloquear";
+            desbloquearToolStripMenuItem.Click += desbloquearToolStripMenuItem_Click;
             // 
-            // pontoDeRestauroToolStripMenuItem
+            // bloqueioTotalToolStripMenuItem
             // 
-            pontoDeRestauroToolStripMenuItem.Name = "pontoDeRestauroToolStripMenuItem";
-            pontoDeRestauroToolStripMenuItem.Size = new Size(236, 22);
-            pontoDeRestauroToolStripMenuItem.Text = "Ponto de Restauro";
-            pontoDeRestauroToolStripMenuItem.Click += pontoDeRestauroToolStripMenuItem_Click;
+            bloqueioTotalToolStripMenuItem.Name = "bloqueioTotalToolStripMenuItem";
+            bloqueioTotalToolStripMenuItem.Size = new Size(254, 22);
+            bloqueioTotalToolStripMenuItem.Text = "Bloqueio Total";
+            bloqueioTotalToolStripMenuItem.Click += bloqueioTotalToolStripMenuItem_Click;
             // 
-            // manutençãoDoWindowsToolStripMenuItem
+            // bloqueioTotalExceptoOGmailToolStripMenuItem
             // 
-            manutençãoDoWindowsToolStripMenuItem.Name = "manutençãoDoWindowsToolStripMenuItem";
-            manutençãoDoWindowsToolStripMenuItem.Size = new Size(236, 22);
-            manutençãoDoWindowsToolStripMenuItem.Text = "Manutenção do Windows";
-            manutençãoDoWindowsToolStripMenuItem.Click += manutençãoDoWindowsToolStripMenuItem_Click;
+            bloqueioTotalExceptoOGmailToolStripMenuItem.Name = "bloqueioTotalExceptoOGmailToolStripMenuItem";
+            bloqueioTotalExceptoOGmailToolStripMenuItem.Size = new Size(254, 22);
+            bloqueioTotalExceptoOGmailToolStripMenuItem.Text = "Bloqueio Total Excepto o Gmail";
+            bloqueioTotalExceptoOGmailToolStripMenuItem.Click += bloqueioTotalExceptoOGmailToolStripMenuItem_Click;
+            // 
+            // bloqueioRedesSociaisToolStripMenuItem
+            // 
+            bloqueioRedesSociaisToolStripMenuItem.Name = "bloqueioRedesSociaisToolStripMenuItem";
+            bloqueioRedesSociaisToolStripMenuItem.Size = new Size(254, 22);
+            bloqueioRedesSociaisToolStripMenuItem.Text = "Bloqueio Redes Sociais";
+            bloqueioRedesSociaisToolStripMenuItem.Click += bloqueioRedesSociaisToolStripMenuItem_Click;
+            // 
+            // bloqueioStreamToolStripMenuItem
+            // 
+            bloqueioStreamToolStripMenuItem.Name = "bloqueioStreamToolStripMenuItem";
+            bloqueioStreamToolStripMenuItem.Size = new Size(254, 22);
+            bloqueioStreamToolStripMenuItem.Text = "Bloqueio Stream";
+            bloqueioStreamToolStripMenuItem.Click += bloqueioStreamToolStripMenuItem_Click;
+            // 
+            // bloqueioRedesSociaisEStreamToolStripMenuItem
+            // 
+            bloqueioRedesSociaisEStreamToolStripMenuItem.Name = "bloqueioRedesSociaisEStreamToolStripMenuItem";
+            bloqueioRedesSociaisEStreamToolStripMenuItem.Size = new Size(254, 22);
+            bloqueioRedesSociaisEStreamToolStripMenuItem.Text = "Bloqueio Redes Sociais e Stream";
+            bloqueioRedesSociaisEStreamToolStripMenuItem.Click += bloqueioRedesSociaisEStreamToolStripMenuItem_Click;
             // 
             // Dashboard
             // 
@@ -655,5 +719,13 @@
         private ToolStripMenuItem backupDeDriversToolStripMenuItem;
         private ToolStripMenuItem pontoDeRestauroToolStripMenuItem;
         private ToolStripMenuItem manutençãoDoWindowsToolStripMenuItem;
+        private ToolStripMenuItem desinstalarComWingetToolStripMenuItem;
+        private ToolStripMenuItem hostToolStripMenuItem;
+        private ToolStripMenuItem desbloquearToolStripMenuItem;
+        private ToolStripMenuItem bloqueioTotalToolStripMenuItem;
+        private ToolStripMenuItem bloqueioTotalExceptoOGmailToolStripMenuItem;
+        private ToolStripMenuItem bloqueioRedesSociaisToolStripMenuItem;
+        private ToolStripMenuItem bloqueioStreamToolStripMenuItem;
+        private ToolStripMenuItem bloqueioRedesSociaisEStreamToolStripMenuItem;
     }
 }
