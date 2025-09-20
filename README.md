@@ -20,11 +20,16 @@ O ficheiro `App.config` deve conter:
 
 ```xml
 <appSettings>
+<appSettings>
+  <add key="Admin" value="Administrador da Maquina" />
+  <add key="SenhaAdmin" value="Senha de Administrador da Maquina" />
   <add key="NomeDominio" value="MEU_DOMINIO" />
-  <add key="Administrador" value="Administrador" />
-  <add key="SenhaAdministrador" value="senhaSegura" />
+  <add key="Administrador" value="Administrador do Documinio" />
+  <add key="SenhaAdministrador" value="Senha de Administrador do Dominio" />
   <add key="ListServerDC" value="dc01;dc02" />
   <add key="ServidorGateway" value="ntp01;ntp02" />
+</appSettings>
+
 </appSettings>
 ```
 
