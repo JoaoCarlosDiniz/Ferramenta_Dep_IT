@@ -151,17 +151,19 @@ O ficheiro `App.config` deve conter:
 ---
 
 # 🎨 Tema Claro - Versão Original
-<img width="1200" height="900" alt="image" src="https://github.com/user-attachments/assets/73863ae7-78dd-47bc-baff-5845c981a7f6" />
+<img width="1292" height="900" alt="image" src="https://github.com/user-attachments/assets/7c20e7a4-ef7c-4817-8d22-70a3610f584a" />
 
 <img width="800" height="398" alt="image" src="https://github.com/user-attachments/assets/ed6dbfa2-11b2-4f20-9784-12b0562e38d2" />
+<img width="800" height="390" alt="image" src="https://github.com/user-attachments/assets/767bcae2-4b39-40e3-9298-fc361713c8e4" />
 
 # 🎨 Tema Claro - Versão Simplificada
 <img width="802" height="482" alt="image" src="https://github.com/user-attachments/assets/7538c969-f122-4878-a070-0a0251453a43" />
 
 # 🎨 Tema Escuro - Versão Original
-<img width="1200" height="900" alt="image" src="https://github.com/user-attachments/assets/fb6029ae-4729-499e-9e01-269fbde24723" />
+<img width="1292" height="900" alt="image" src="https://github.com/user-attachments/assets/59ec7018-c118-4920-9db5-c8065f10ff4f" />
 
 <img width="800" height="398" alt="image" src="https://github.com/user-attachments/assets/85c9c564-8805-43f9-888b-157f82edabc7" />
+<img width="800" height="390" alt="image" src="https://github.com/user-attachments/assets/42564cdb-93f4-4df7-bdbc-e3f62aa6d405" />
 
 # 🎨 Tema Escuro - Versão Simplificada
 <img width="802" height="482" alt="image" src="https://github.com/user-attachments/assets/1fccbdf3-3eed-449d-8455-69b0696c049c" />
