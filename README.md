@@ -164,7 +164,7 @@ O ficheiro `App.config` deve conter:
 <img width="800" height="390" alt="image" src="https://github.com/user-attachments/assets/767bcae2-4b39-40e3-9298-fc361713c8e4" />
 
 # 🎨 Tema Claro - Versão Simplificada
-<img width="802" height="482" alt="image" src="https://github.com/user-attachments/assets/7538c969-f122-4878-a070-0a0251453a43" />
+<img width="802" height="482" alt="image" src="https://github.com/user-attachments/assets/8948e5fd-dc6f-41cd-8a32-ff509c1b9771" />
 
 # 🎨 Tema Escuro - Versão Original
 <img width="1296" height="900" alt="Captura de ecrã 2025-09-20 162736" src="https://github.com/user-attachments/assets/7de055f2-f671-429c-82b3-2c7170b230a7" />
@@ -173,7 +173,7 @@ O ficheiro `App.config` deve conter:
 <img width="800" height="390" alt="image" src="https://github.com/user-attachments/assets/42564cdb-93f4-4df7-bdbc-e3f62aa6d405" />
 
 # 🎨 Tema Escuro - Versão Simplificada
-<img width="802" height="482" alt="image" src="https://github.com/user-attachments/assets/1fccbdf3-3eed-449d-8455-69b0696c049c" />
+<img width="804" height="484" alt="image" src="https://github.com/user-attachments/assets/e9e4ff2b-ac1f-42b6-a705-01bf054b2e20" />
 
 ---
 
