@@ -3,26 +3,26 @@ using System.Text.RegularExpressions;
 
 namespace IT
 {
-    public class WingetUpdateForm : DevExpress.XtraEditors.XtraForm
+    public class WingetUninstallForm : DevExpress.XtraEditors.XtraForm
     {
         private CheckedListBox checkedListBoxApps;
         private Label labelStatus;
-        private DevExpress.XtraEditors.SimpleButton buttonUpdate;
+        private DevExpress.XtraEditors.SimpleButton buttonUninstall;
         private DevExpress.XtraEditors.SimpleButton buttonCancel;
-        private List<WingetApp> upgradableApps;
+        private List<WingetApp> installedApps;
 
-        public WingetUpdateForm()
+        public WingetUninstallForm()
         {
             InitializeComponent();
-            this.Load += WingetUpdateForm_Load;
+            this.Load += WingetUninstallForm_Load;
         }
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WingetUpdateForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WingetUninstallForm));
             checkedListBoxApps = new CheckedListBox();
             labelStatus = new Label();
-            buttonUpdate = new DevExpress.XtraEditors.SimpleButton();
+            buttonUninstall = new DevExpress.XtraEditors.SimpleButton();
             buttonCancel = new DevExpress.XtraEditors.SimpleButton();
             SuspendLayout();
             // 
@@ -32,7 +32,7 @@ namespace IT
             checkedListBoxApps.FormattingEnabled = true;
             checkedListBoxApps.Location = new Point(12, 35);
             checkedListBoxApps.Name = "checkedListBoxApps";
-            checkedListBoxApps.Size = new Size(774, 166);
+            checkedListBoxApps.Size = new Size(774, 238);
             checkedListBoxApps.TabIndex = 0;
             // 
             // labelStatus
@@ -40,18 +40,18 @@ namespace IT
             labelStatus.AutoSize = true;
             labelStatus.Location = new Point(12, 9);
             labelStatus.Name = "labelStatus";
-            labelStatus.Size = new Size(148, 15);
+            labelStatus.Size = new Size(200, 15);
             labelStatus.TabIndex = 3;
-            labelStatus.Text = "A procurar atualizações...";
+            labelStatus.Text = "A procurar aplicações instaladas...";
             // 
-            // buttonUpdate
+            // buttonUninstall
             // 
-            buttonUpdate.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("buttonUpdate.ImageOptions.SvgImage");
-            buttonUpdate.Location = new Point(692, 310);
-            buttonUpdate.Name = "buttonUpdate";
-            buttonUpdate.Size = new Size(44, 44);
-            buttonUpdate.TabIndex = 4;
-            buttonUpdate.Click += buttonUpdate_Click;
+            buttonUninstall.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("buttonUninstall.ImageOptions.SvgImage");
+            buttonUninstall.Location = new Point(692, 310);
+            buttonUninstall.Name = "buttonUninstall";
+            buttonUninstall.Size = new Size(44, 44);
+            buttonUninstall.TabIndex = 4;
+            buttonUninstall.Click += buttonUninstall_Click;
             // 
             // buttonCancel
             // 
@@ -62,42 +62,42 @@ namespace IT
             buttonCancel.TabIndex = 5;
             buttonCancel.Click += buttonCancel_Click;
             // 
-            // WingetUpdateForm
+            // WingetUninstallForm
             // 
             Appearance.Options.UseFont = true;
             ClientSize = new Size(798, 356);
             Controls.Add(buttonCancel);
-            Controls.Add(buttonUpdate);
+            Controls.Add(buttonUninstall);
             Controls.Add(labelStatus);
             Controls.Add(checkedListBoxApps);
-            IconOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("WingetUpdateForm.IconOptions.SvgImage");
+            IconOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("WingetUninstallForm.IconOptions.SvgImage");
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "WingetUpdateForm";
+            Name = "WingetUninstallForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Atualizar Aplicativos com Winget";
+            Text = "Desinstalar Aplicações com Winget";
             ResumeLayout(false);
             PerformLayout();
         }
 
-        private async void WingetUpdateForm_Load(object sender, EventArgs e)
+        private async void WingetUninstallForm_Load(object sender, EventArgs e)
         {
-            buttonUpdate.Enabled = false;
-            upgradableApps = await GetUpgradableAppsAsync();
+            buttonUninstall.Enabled = false;
+            installedApps = await GetInstalledAppsAsync();
 
-            if (upgradableApps.Any())
+            if (installedApps.Any())
             {
-                labelStatus.Text = "Selecione os aplicativos para atualizar:";
-                checkedListBoxApps.Items.AddRange(upgradableApps.ToArray());
-                buttonUpdate.Enabled = true;
+                labelStatus.Text = "Selecione as aplicações para desinstalar:";
+                checkedListBoxApps.Items.AddRange(installedApps.ToArray());
+                buttonUninstall.Enabled = true;
             }
             else
             {
-                labelStatus.Text = "Nenhuma atualização encontrada.";
+                labelStatus.Text = "Nenhuma aplicação encontrada.";
             }
         }
 
-        private Task<List<WingetApp>> GetUpgradableAppsAsync()
+        private Task<List<WingetApp>> GetInstalledAppsAsync()
         {
             return Task.Run(() =>
             {
@@ -106,7 +106,7 @@ namespace IT
                 var processStartInfo = new ProcessStartInfo
                 {
                     FileName = "winget",
-                    Arguments = "upgrade --location PT --accept-source-agreements",
+                    Arguments = "list --accept-source-agreements",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
@@ -117,15 +117,13 @@ namespace IT
                 using (var process = Process.Start(processStartInfo))
                 {
                     rawOutput = process.StandardOutput.ReadToEnd();
-                    rawOutput += process.StandardError.ReadToEnd();
+                    string errorOutput = process.StandardError.ReadToEnd();
                     process.WaitForExit();
 
                     var lines = rawOutput.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                     bool headerFound = false;
                     
-                    // Regex to parse the line. It looks for at least two spaces between columns.
-                    // It captures: 1. Name, 2. ID, 3. Current Version, 4. Available Version
-                    var appRegex = new Regex(@"^(.*?)\s{2,}(.*?)\s{2,}(.*?)\s{2,}(.*?)\s{2,}", RegexOptions.Compiled);
+                    var appRegex = new Regex(@"^(.*?)\s{2,}(.*?)\s{2,}(.*?)\s{2,}", RegexOptions.Compiled);
 
                     foreach (var line in lines)
                     {
@@ -135,15 +133,14 @@ namespace IT
                             continue;
                         }
 
-                        if (headerFound && !line.StartsWith("---") && !line.Contains("upgrades available") && !line.Contains("atualizações disponíveis"))
+                        if (headerFound && !line.StartsWith("---"))
                         {
                             var match = appRegex.Match(line);
                             if (match.Success)
                             {
                                 string name = match.Groups[1].Value.Trim();
                                 string id = match.Groups[2].Value.Trim();
-                                string currentVersion = match.Groups[3].Value.Trim();
-                                string availableVersion = match.Groups[4].Value.Trim().Split(' ')[0]; // Take first part of available version
+                                string version = match.Groups[3].Value.Trim();
 
                                 if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(id))
                                 {
@@ -151,7 +148,8 @@ namespace IT
                                     {
                                         Name = name,
                                         Id = id,
-                                        VersaoAtual = currentVersion,
+                                        VersaoAtual = version,
+                                        VersaoDisponivel = null
                                     });
                                 }
                             }
@@ -159,39 +157,38 @@ namespace IT
                     }
                 }
 
-                if (!apps.Any() && !string.IsNullOrWhiteSpace(rawOutput))
-                {
-                    // Se nenhuma aplicação for encontrada, mostra a saída bruta para depuração.
-                    MessageBox.Show("Nenhuma atualização encontrada. Saída do Winget:\n\n" + rawOutput, "Diagnóstico do Winget", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-
                 return apps;
             });
         }
 
-        private void buttonUpdate_Click(object sender, EventArgs e)
+        private void buttonUninstall_Click(object sender, EventArgs e)
         {
             var selectedApps = checkedListBoxApps.CheckedItems.OfType<WingetApp>().ToList();
             if (!selectedApps.Any())
             {
-                MessageBox.Show("Nenhum aplicativo foi selecionado para atualização.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Nenhuma aplicação foi selecionada para desinstalação.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (MessageBox.Show($"Tem a certeza que pretende desinstalar as {selectedApps.Count} aplicações selecionadas?", "Confirmar Desinstalação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            {
                 return;
             }
 
             this.Enabled = false;
-            labelStatus.Text = "A atualizar aplicativos selecionados...";
+            labelStatus.Text = "A desinstalar aplicações selecionadas...";
             Application.DoEvents();
 
             foreach (var app in selectedApps)
             {
-                labelStatus.Text = $"A atualizar: {app.Name}...";
+                labelStatus.Text = $"A desinstalar: {app.Name}...";
                 Application.DoEvents();
-                RunCommandAsAdmin($"/c winget upgrade --id \"{app.Id}\" --location PT --accept-package-agreements --accept-source-agreements",
-                                  $"'{app.Name}' atualizado com sucesso.",
-                                  $"Falha ao atualizar '{app.Name}'.");
+                RunCommandAsAdmin($"/c winget uninstall --id \"{app.Id}\" --accept-source-agreements --accept-package-agreements",
+                                  $"'{app.Name}' desinstalado com sucesso.",
+                                  $"Falha ao desinstalar '{app.Name}'.");
             }
 
-            MessageBox.Show("Processo de atualização concluído.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Processo de desinstalação concluído.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
 

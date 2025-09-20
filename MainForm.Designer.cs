@@ -83,6 +83,7 @@
             btCriarPontoRestauro = new DevExpress.XtraBars.BarButtonItem();
             btManutencaoWIN = new DevExpress.XtraBars.BarButtonItem();
             btActualiza = new DevExpress.XtraBars.BarButtonItem();
+            btUser_Desisntalar = new DevExpress.XtraBars.BarButtonItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             rbDominio = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             rbWindows = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -194,10 +195,10 @@
             ribbonControl1.AllowMinimizeRibbon = false;
             ribbonControl1.AllowTrimPageText = false;
             ribbonControl1.ExpandCollapseItem.Id = 0;
-            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, btDominio_Teste, btWindows_Teste, btUtilizador_Teste, btRede_Teste, btResetPool, btResolveRDC, btFixTime, btCorreccaoAdmin, ckEstilo, btDashBoardRefresh, btCheckRAM, btBackupDRV, btCriarPontoRestauro, btManutencaoWIN, btActualiza });
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, btDominio_Teste, btWindows_Teste, btUtilizador_Teste, btRede_Teste, btResetPool, btResolveRDC, btFixTime, btCorreccaoAdmin, ckEstilo, btDashBoardRefresh, btCheckRAM, btBackupDRV, btCriarPontoRestauro, btManutencaoWIN, btActualiza, btUser_Desisntalar });
             ribbonControl1.Location = new Point(0, 0);
             ribbonControl1.Margin = new Padding(4, 3, 4, 3);
-            ribbonControl1.MaxItemId = 16;
+            ribbonControl1.MaxItemId = 17;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.OptionsExpandCollapseMenu.EnableExpandCollapseMenu = DevExpress.Utils.DefaultBoolean.False;
             ribbonControl1.OptionsExpandCollapseMenu.ShowQuickAccessToolbarItem = DevExpress.Utils.DefaultBoolean.False;
@@ -391,6 +392,14 @@
             btActualiza.SuperTip = superToolTip13;
             btActualiza.ItemClick += btActualiza_ItemClick;
             // 
+            // btUser_Desisntalar
+            // 
+            btUser_Desisntalar.Caption = "Desinstalar com Winget";
+            btUser_Desisntalar.Id = 16;
+            btUser_Desisntalar.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btUser_Desisntalar.ImageOptions.SvgImage");
+            btUser_Desisntalar.Name = "btUser_Desisntalar";
+            btUser_Desisntalar.ItemClick += btUser_Desisntalar_ItemClick;
+            // 
             // ribbonPage1
             // 
             ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { rbDominio, rbWindows, rbUtilizador, rbRede, rbDashBoard });
@@ -420,6 +429,7 @@
             // rbUtilizador
             // 
             rbUtilizador.ItemLinks.Add(btUtilizador_Teste);
+            rbUtilizador.ItemLinks.Add(btUser_Desisntalar);
             rbUtilizador.ItemLinks.Add(btResetPool);
             rbUtilizador.Name = "rbUtilizador";
             rbUtilizador.State = DevExpress.XtraBars.Ribbon.RibbonPageGroupState.Expanded;
@@ -1183,8 +1193,6 @@
             Controls.Add(ribbonControl1);
             IconOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("MainForm.IconOptions.SvgImage");
             Margin = new Padding(4, 3, 4, 3);
-            MaximizeBox = false;
-            MinimizeBox = false;
             Name = "MainForm";
             Ribbon = ribbonControl1;
             StartPosition = FormStartPosition.CenterScreen;
@@ -1323,5 +1331,6 @@
         private DevExpress.XtraBars.BarButtonItem btCriarPontoRestauro;
         private DevExpress.XtraBars.BarButtonItem btManutencaoWIN;
         private DevExpress.XtraBars.BarButtonItem btActualiza;
+        private DevExpress.XtraBars.BarButtonItem btUser_Desisntalar;
     }
 }

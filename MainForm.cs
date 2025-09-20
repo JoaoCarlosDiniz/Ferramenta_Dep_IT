@@ -17,6 +17,8 @@ namespace IT
         #region Variaveis
         private NameValueCollection AppSettings = ConfigurationManager.AppSettings;
 
+        private string Admin = ConfigurationManager.AppSettings["Admin"];
+        private string SenhaAdmin = ConfigurationManager.AppSettings["SenhaAdmin"];
         private string NomeDominio = ConfigurationManager.AppSettings["NomeDominio"];
         private string Administrador = ConfigurationManager.AppSettings["Administrador"];
         private string SenhaAdministrador = ConfigurationManager.AppSettings["SenhaAdministrador"];
@@ -142,7 +144,7 @@ namespace IT
                     inParams["Password"] = SenhaAdministrador;
                     inParams["UserName"] = $"{NomeDominio}\\{Administrador}";
                     inParams["DomainControllerName"] = selectedDC;
-                    inParams["FJoinOptions"] = 3; // 1 (Join Domain) + 2 (Create Account) = 3
+                    inParams["FJoinOptions"] = 1; // 1 (Join Domain) + 2 (Create Account) = 3
 
                     ManagementBaseObject outParams = computerSystem.InvokeMethod("JoinDomainOrWorkgroup", inParams, null);
                     uint returnValue = (uint)outParams["ReturnValue"];
@@ -163,7 +165,7 @@ namespace IT
             }
         }
 
-        private void btFixTime_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private async void btFixTime_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             string selectedServer = ShowSelectDialog("Selecionar Servidor de Tempo", "Escolha o servidor de tempo (NTP):", ServidorGateway);
             if (string.IsNullOrEmpty(selectedServer))
@@ -191,8 +193,8 @@ namespace IT
                     RunCommandAsAdmin("/c w32tm /resync /force", "Sincronização de tempo forçada.", "Falha ao forçar a sincronização.");
 
                     // Consultar e exibir o status
-                    string status = RunCommandAndGetOutput("/c w32tm /query /status");
-                    string source = RunCommandAndGetOutput("/c w32tm /query /source");
+                    string status = await RunCommandAndGetOutput("w32tm /query /status");
+                    string source = await RunCommandAndGetOutput("w32tm /query /source");
 
                     MessageBox.Show($"Sincronização concluída.\n\nStatus:\n{status}\nFonte:\n{source}", "Resultado da Sincronização", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -437,7 +439,7 @@ namespace IT
             }
         }
 
-        private void btBackupDRV_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private async void btBackupDRV_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             using (System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog())
             {
@@ -465,7 +467,7 @@ namespace IT
                     }
 
                     string command = $"{pnputilPath} /export-driver * \"{tempExportPath}\"";
-                    string output = RunCommandAndGetOutput(command);
+                    string output = await RunCommandAndGetOutput(command);
 
                     if (output.StartsWith("Comando falhou"))
                     {
@@ -573,7 +575,29 @@ namespace IT
             }
         }
 
-        private void btResetPool_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void btUser_Desisntalar_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            UninstallAppsWithWinget();
+        }
+
+        private void UninstallAppsWithWinget()
+        {
+            try
+            {
+                // É necessário criar um novo formulário 'WingetUninstallForm'
+                // com a lógica para listar e desinstalar aplicações via Winget.
+                using (var uninstallForm = new WingetUninstallForm())
+                {
+                    uninstallForm.ShowDialog(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocorreu um erro ao iniciar o processo de desinstalação: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void btResetPool_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             if (MessageBox.Show("Tem a certeza que pretende reiniciar o serviço de impressão e limpar a fila de impressão?", "Reset Spooler de Impressão", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
@@ -584,7 +608,7 @@ namespace IT
                     int exitCode;
 
                     // Parar o serviço de spooler de impressão
-                    exitCode = RunCommand("/c net stop spooler");
+                    exitCode = await RunCommand("/c net stop spooler");
                     if (exitCode != 0)
                     {
                         MessageBox.Show($"Falha ao parar o serviço de impressão." + Environment.NewLine + "Código de erro: {exitCode}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -594,7 +618,7 @@ namespace IT
                     }
 
                     // Limpar a pasta de spool
-                    exitCode = RunCommand("/c del %systemroot%\\system32\\spool\\printers\\* /Q /F /S");
+                    exitCode = await RunCommand("/c del %systemroot%\\system32\\spool\\printers\\* /Q /F /S");
                     // O comando del pode retornar 1 se não encontrar ficheiros, o que não é um erro neste contexto.
                     if (exitCode != 0 && exitCode != 1)
                     {
@@ -603,7 +627,7 @@ namespace IT
                     }
 
                     // Iniciar o serviço de spooler de impressão
-                    exitCode = RunCommand("/c net start spooler");
+                    exitCode = await RunCommand("/c net start spooler");
                     if (exitCode != 0)
                     {
                         MessageBox.Show($"Falha ao iniciar o serviço de impressão." + Environment.NewLine + "Código de erro: {exitCode}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -703,10 +727,12 @@ namespace IT
 
         private void LimparNetBIOS()
         {
-            RunCommandAsAdmin("/c nbtstat -R", "O cache NetBIOS foi limpo com sucesso.", "Ocorreu um erro ao limpar o cache de NetBIOS.");
+            // Códigos de sucesso para 'nbtstat -R'. 0 = sucesso, 1 = cache não precisava de ser limpo.
+            int[] nbtstatSuccessCodes = new[] { 0, 1 };
+            RunCommandAsAdmin("/c nbtstat -R", "O cache NetBIOS foi limpo com sucesso ou não necessitava de limpeza.", "Ocorreu um erro ao limpar o cache de NetBIOS.", nbtstatSuccessCodes);
         }
 
-        private void btCorreccaoAdmin_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private async void btCorreccaoAdmin_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             List<string> options = new List<string>
             {
@@ -732,40 +758,84 @@ namespace IT
             }
         }
 
-        private void ResetComputerAccountPassword()
+        private async void ResetComputerAccountPassword()
         {
-            string selectedDC = ShowSelectDialog("Selecionar Servidor de DC", "Escolha o servidor de DC para redefinir a senha da conta do computador:", ListServerDC);
-            if (string.IsNullOrEmpty(selectedDC))
+            if (string.IsNullOrEmpty(Admin) || string.IsNullOrEmpty(SenhaAdmin))
             {
-                return; // User cancelled
+                MessageBox.Show("O nome de utilizador e/ou a senha do administrador local não estão configurados no ficheiro App.config.", "Configuração em Falta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
-            if (MessageBox.Show($"Tem a certeza que pretende redefinir a senha da conta do computador no domínio através do servidor {selectedDC}?", "Redefinir Senha da Conta do Computador", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show($"Esta operação irá criar ou redefinir a senha do utilizador local '{Admin}'.\nDeseja continuar?", "Gerir Administrador Local", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
-                string command = $"/c netdom resetpwd /server:{selectedDC} /userd:{NomeDominio}\\{Administrador} /passwordd:{SenhaAdministrador}";
-                string successMessage = "A senha da conta do computador foi redefinida com sucesso.";
-                string errorMessage = "Ocorreu um erro ao redefinir a senha da conta do computador.";
+                return;
+            }
 
-                RunCommandAsAdmin(command, successMessage, errorMessage);
+            try
+            {
+                // Executa o comando para verificar a existência do utilizador.
+                // O método RunCommand agora é usado para obter diretamente o código de saída.
+                int exitCode = await RunCommand($"/c net user {Admin}");
+
+                switch (exitCode)
+                {
+                    case 0: // Utilizador existe
+                        // Redefine a senha
+                        string resetPasswordCommand = $"/c net user {Admin} \"{SenhaAdmin}\"";
+                        await RunCommandAsAdmin(resetPasswordCommand, $"A senha do utilizador '{Admin}' foi redefinida com sucesso.", $"Falha ao redefinir a senha do utilizador '{Admin}'.");
+                        break;
+
+                    case 2: // Utilizador não existe
+                        // Cria o utilizador e adiciona-o ao grupo de Administradores
+                        string createUserCommand = $"/c net user {Admin} /add";
+                        bool userCreated = await RunCommandAsAdminInternal(createUserCommand, $"Falha ao criar o utilizador '{Admin}'.");
+                        resetPasswordCommand = $"/c net user {Admin} \"{SenhaAdmin}\"";
+                        await RunCommandAsAdmin(resetPasswordCommand, $"A senha do utilizador '{Admin}' foi redefinida com sucesso.", $"Falha ao redefinir a senha do utilizador '{Admin}'.");
+
+                        if (userCreated)
+                        {
+                            string addToAdminGroupCommand = $"/c net localgroup Administradores {Admin} /add";
+                            bool userAddedToGroup = await RunCommandAsAdminInternal(addToAdminGroupCommand, $"Falha ao adicionar '{Admin}' ao grupo de Administradores.");
+
+                            if (userAddedToGroup)
+                            {
+                                MessageBox.Show($"Utilizador '{Admin}' criado e adicionado ao grupo de Administradores com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                        break;
+
+                    default: // Outro erro
+                        MessageBox.Show($"Ocorreu um erro inesperado ao verificar o utilizador '{Admin}'.\nCódigo de saída: {exitCode}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocorreu um erro ao gerir a conta de administrador local: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void EnableRemoteAdminAccess()
+        private async void EnableRemoteAdminAccess()
         {
             if (MessageBox.Show("Esta operação irá ativar serviços, regras de firewall e alterar o registo para permitir acesso administrativo remoto." + Environment.NewLine + "Deseja continuar?", "Ativar Acesso Administrativo Remoto", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                // Códigos de sucesso para o comando 'sc start'. 0 = sucesso, 1056 = serviço já em execução.
+                int[] serviceStartSuccessCodes = new[] { 0, 1056 };
+                // Códigos de sucesso para 'netsh'. 0 = sucesso, 1 = Nenhuma regra correspondeu (pode significar que já está OK).
+                int[] netshSuccessCodes = new[] { 0, 1 };
+
                 // Ativar serviços necessários
-                RunCommandAsAdmin("/c sc config lanmanserver start= auto", "Serviço 'Server' configurado para iniciar automaticamente.", "Falha ao configurar o serviço 'Server'.");
-                RunCommandAsAdmin("/c sc start lanmanserver", "Serviço 'Server' iniciado.", "Falha ao iniciar o serviço 'Server'.");
-                RunCommandAsAdmin("/c sc config lanmanworkstation start= auto", "Serviço 'Workstation' configurado para iniciar automaticamente.", "Falha ao configurar o serviço 'Workstation'.");
-                RunCommandAsAdmin("/c sc start lanmanworkstation", "Serviço 'Workstation' iniciado.", "Falha ao iniciar o serviço 'Workstation'.");
+                await RunCommandAsAdmin("/c sc config lanmanserver start= auto", "Serviço 'Server' configurado para iniciar automaticamente.", "Falha ao configurar o serviço 'Server'.");
+                await RunCommandAsAdmin("/c sc start lanmanserver", "Serviço 'Server' iniciado ou já em execução.", "Falha ao iniciar o serviço 'Server'.", serviceStartSuccessCodes);
+                await RunCommandAsAdmin("/c sc config lanmanworkstation start= auto", "Serviço 'Workstation' configurado para iniciar automaticamente.", "Falha ao configurar o serviço 'Workstation'.");
+                await RunCommandAsAdmin("/c sc start lanmanworkstation", "Serviço 'Workstation' iniciado ou já em execução.", "Falha ao iniciar o serviço 'Workstation'.", serviceStartSuccessCodes);
 
                 // Ativar regras de firewall
-                RunCommandAsAdmin("/c netsh advfirewall firewall set rule group=\"Descoberta de Rede\" new enable=Yes", "Regras de firewall para 'Descoberta de Rede' ativadas.", "Falha ao ativar regras de firewall para 'Descoberta de Rede'.");
-                RunCommandAsAdmin("/c netsh advfirewall firewall set rule group=\"Partilha de Ficheiros e Impressoras\" new enable=Yes", "Regras de firewall para 'Partilha de Ficheiros e Impressoras' ativadas.", "Falha ao ativar regras de firewall para 'Partilha de Ficheiros e Impressoras'.");
+                await RunCommandAsAdmin("/c netsh advfirewall firewall set rule group=\"Descoberta de Rede\" new enable=Yes", "Regras de firewall para 'Descoberta de Rede' ativadas ou já ativas.", "Falha ao ativar regras de firewall para 'Descoberta de Rede'.", netshSuccessCodes);
+                await RunCommandAsAdmin("/c netsh advfirewall firewall set rule group=\"Partilha de Ficheiros e Impressoras\" new enable=Yes", "Regras de firewall para 'Partilha de Ficheiros e Impressoras' ativadas ou já ativas.", "Falha ao ativar regras de firewall para 'Partilha de Ficheiros e Impressoras'.", netshSuccessCodes);
 
                 // Criar/alterar registo para permitir acesso remoto com contas locais
-                RunCommandAsAdmin("/c reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\" /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f", "Registo para acesso remoto com contas locais configurado.", "Falha ao configurar o registo para acesso remoto.");
+                await RunCommandAsAdmin("/c reg add \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\" /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f", "Registo para acesso remoto com contas locais configurado.", "Falha ao configurar o registo para acesso remoto.");
 
                 MessageBox.Show("A configuração de acesso administrativo remoto foi concluída.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -938,37 +1008,38 @@ namespace IT
             ponteiroDiscoEscuro.Value = DiscoUso;
         }
 
-        private int RunCommand(string command)
+        private async Task<int> RunCommand(string command)
         {
-            ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", command)
+            Process process = Process.Start(new ProcessStartInfo("cmd.exe", command)
             {
-                Verb = "runas", // Request administrator privileges
+                Verb = "runas",
                 UseShellExecute = true,
                 CreateNoWindow = true,
                 WindowStyle = ProcessWindowStyle.Hidden
-            };
-
-            Process process = Process.Start(psi);
-            process.WaitForExit();
+            });
+            await process.WaitForExitAsync();
             return process.ExitCode;
         }
 
-        private void RunCommandAsAdmin(string command, string successMessage, string errorMessage)
+        private async Task RunCommandAsAdmin(string command, string successMessage, string errorMessage, int[] successExitCodes = null)
         {
+            if (successExitCodes == null)
+            {
+                successExitCodes = new[] { 0 };
+            }
+
             try
             {
-                ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", command)
+                Process process = Process.Start(new ProcessStartInfo("cmd.exe", command)
                 {
-                    Verb = "runas", // Request administrator privileges
+                    Verb = "runas",
                     UseShellExecute = true,
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden
-                };
+                });
+                await process.WaitForExitAsync();
 
-                Process process = Process.Start(psi);
-                process.WaitForExit();
-
-                if (process.ExitCode == 0)
+                if (successExitCodes.Contains(process.ExitCode))
                 {
                     MessageBox.Show(successMessage, "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -987,43 +1058,47 @@ namespace IT
             }
         }
 
-        private string RunCommandAndGetOutput(string command)
+        private async Task<bool> RunCommandAsAdminInternal(string command, string errorMessage, int[] successExitCodes = null)
         {
-            string output = "";
+            if (successExitCodes == null)
+            {
+                successExitCodes = new[] { 0 };
+            }
+
             try
             {
-                string tempOutputFile = Path.GetTempFileName();
-                ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", $"/c {command} > \"{tempOutputFile}\"")
+                Process process = Process.Start(new ProcessStartInfo("cmd.exe", command)
                 {
-                    Verb = "runas", // Request administrator privileges
+                    Verb = "runas",
                     UseShellExecute = true,
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden
-                };
+                });
+                await process.WaitForExitAsync();
 
-                Process process = Process.Start(psi);
-                process.WaitForExit();
-
-                output = File.ReadAllText(tempOutputFile);
-                File.Delete(tempOutputFile);
-
-                if (process.ExitCode != 0)
+                if (successExitCodes.Contains(process.ExitCode))
                 {
-                    return $"Comando falhou com código de saída: {process.ExitCode}\n{output}";
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show($"{errorMessage}\nCódigo de saída: {process.ExitCode}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
                 }
             }
             catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223) // Operation was canceled by the user
             {
-                return "A operação foi cancelada pelo utilizador.";
+                MessageBox.Show("A operação foi cancelada pelo utilizador.", "Cancelado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
             }
             catch (Exception ex)
             {
-                return $"Erro ao executar o comando: {ex.Message}";
+                MessageBox.Show($"{errorMessage}\nDetalhes: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
-            return output;
         }
 
-        private string RunCommandAndGetOutput(string command, int[] successExitCodes = null)
+        private async Task<string> RunCommandAndGetOutput(string command, int[] successExitCodes = null)
         {
             if (successExitCodes == null)
             {
@@ -1031,22 +1106,19 @@ namespace IT
             }
 
             string output = "";
+            string tempOutputFile = Path.GetTempFileName();
             try
             {
-                string tempOutputFile = Path.GetTempFileName();
-                ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", $"/c {command} > \"{tempOutputFile}\" 2>&1")
+                Process process = Process.Start(new ProcessStartInfo("cmd.exe", $"/c {command} > \"{tempOutputFile}\" 2>&1")
                 {
-                    Verb = "runas", // Request administrator privileges
+                    Verb = "runas",
                     UseShellExecute = true,
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden
-                };
-
-                Process process = Process.Start(psi);
-                process.WaitForExit();
+                });
+                await process.WaitForExitAsync();
 
                 output = File.ReadAllText(tempOutputFile);
-                File.Delete(tempOutputFile);
 
                 if (!successExitCodes.Contains(process.ExitCode))
                 {
@@ -1060,6 +1132,13 @@ namespace IT
             catch (Exception ex)
             {
                 return $"Erro ao executar o comando: {ex.Message}";
+            }
+            finally
+            {
+                if (File.Exists(tempOutputFile))
+                {
+                    File.Delete(tempOutputFile);
+                }
             }
             return output;
         }
@@ -1156,7 +1235,18 @@ namespace IT
 
         public override string ToString()
         {
-            return $"{Name} (Versão: {VersaoAtual} -> {VersaoDisponivel})";
+            if (!string.IsNullOrEmpty(VersaoAtual) && !string.IsNullOrEmpty(VersaoDisponivel))
+            {
+                return $"{Name} (Versão: {VersaoAtual} -> {VersaoDisponivel})";
+            }
+            else if (!string.IsNullOrEmpty(VersaoAtual) && string.IsNullOrEmpty(VersaoDisponivel))
+            {
+                return $"{Name} (Versão: {VersaoAtual})";
+            }
+            else
+            {
+                return $"{Name}";
+            }
         }
     }
 }

@@ -75,7 +75,11 @@ O ficheiro `App.config` deve conter:
     - Lista discos, tipo, FS, espaço total/livre.
     - Oferece CHKDSK C: /f (agendado para próximo boot).
     - Oferece SFC /SCANNOW (execução imediata).
-
+- Diagnostico de Memoria
+- Backup de Drivers
+- Criar Ponto de Restauro
+- Manutenção do Windows
+    - Oferece SFC /SCANNOW e de seguida o DISM /Online /Cleanup-Image /RestoreHealth (execução imediata).
 ### 🔐 RDC – CredSSP
 - Aplica correção no Registro:  
     - `AllowEncryptionOracle = 2`  
@@ -83,6 +87,11 @@ O ficheiro `App.config` deve conter:
 ### 👤 Utilizador – Testes
 - Atualização de **apps** via:  
     - `winget upgrade --all`  
+- Desisntalação de apps via interface gráfica (checkbox list):
+    - Lista apps instaladas com `winget list` e apresenta nome, ID e versão.
+    - Permite selecionar várias apps para desinstalar.
+    - Executa `winget uninstall --id "<ID>" --accept-source-agreements --accept-package-agreements` para cada app selecionada.
+    - Mostra progresso e resultados.
 
 ### 🖨️ Impressão
 - Reinicia o serviço de spooler e limpa a pasta de filas:
