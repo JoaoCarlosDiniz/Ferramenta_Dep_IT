@@ -1,0 +1,98 @@
+﻿##########################################
+# FACEBOOK / MESSENGER
+##########################################
+127.0.0.1 facebook.com
+127.0.0.1 www.facebook.com
+127.0.0.1 m.facebook.com
+127.0.0.1 fb.com
+127.0.0.1 www.fb.com
+127.0.0.1 messenger.com
+127.0.0.1 www.messenger.com
+127.0.0.1 static.xx.fbcdn.net
+127.0.0.1 scontent.xx.fbcdn.net
+127.0.0.1 edge-mqtt.facebook.com
+127.0.0.1 graph.facebook.com
+127.0.0.1 api.facebook.com
+
+##########################################
+# INSTAGRAM
+##########################################
+127.0.0.1 instagram.com
+127.0.0.1 www.instagram.com
+127.0.0.1 i.instagram.com
+127.0.0.1 scontent.cdninstagram.com
+127.0.0.1 cdninstagram.com
+
+##########################################
+# TIKTOK
+##########################################
+127.0.0.1 tiktok.com
+127.0.0.1 www.tiktok.com
+127.0.0.1 m.tiktok.com
+127.0.0.1 api.tiktok.com
+127.0.0.1 v19.tiktokcdn.com
+127.0.0.1 v16m.tiktokcdn.com
+127.0.0.1 p16-sign.tiktokcdn.com
+
+##########################################
+# TWITTER / X
+##########################################
+127.0.0.1 twitter.com
+127.0.0.1 www.twitter.com
+127.0.0.1 x.com
+127.0.0.1 www.x.com
+127.0.0.1 api.twitter.com
+127.0.0.1 abs.twimg.com
+127.0.0.1 pbs.twimg.com
+127.0.0.1 video.twimg.com
+
+##########################################
+# LINKEDIN
+##########################################
+127.0.0.1 linkedin.com
+127.0.0.1 www.linkedin.com
+127.0.0.1 static.licdn.com
+127.0.0.1 media.licdn.com
+
+##########################################
+# SNAPCHAT
+##########################################
+127.0.0.1 snapchat.com
+127.0.0.1 www.snapchat.com
+127.0.0.1 feelinsonice-hrd.appspot.com
+127.0.0.1 app.snapchat.com
+127.0.0.1 sc-cdn.net
+
+##########################################
+# PINTEREST
+##########################################
+127.0.0.1 pinterest.com
+127.0.0.1 www.pinterest.com
+127.0.0.1 s.pinimg.com
+127.0.0.1 i.pinimg.com
+
+##########################################
+# REDDIT
+##########################################
+127.0.0.1 reddit.com
+127.0.0.1 www.reddit.com
+127.0.0.1 gateway.reddit.com
+127.0.0.1 styles.redditmedia.com
+127.0.0.1 preview.redd.it
+127.0.0.1 i.redd.it
+127.0.0.1 v.redd.it
+127.0.0.1 redditmedia.com
+
+##########################################
+# TUMBLR
+##########################################
+127.0.0.1 tumblr.com
+127.0.0.1 www.tumblr.com
+127.0.0.1 media.tumblr.com
+127.0.0.1 assets.tumblr.com
+
+##########################################
+# THREADS (Meta)
+##########################################
+127.0.0.1 threads.net
+127.0.0.1 www.threads.net

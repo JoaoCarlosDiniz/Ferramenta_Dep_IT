@@ -1,0 +1,90 @@
+﻿##########################################
+# NETFLIX
+##########################################
+127.0.0.1 netflix.com
+127.0.0.1 www.netflix.com
+127.0.0.1 api.netflix.com
+127.0.0.1 assets.nflxext.com
+127.0.0.1 nflxext.com
+127.0.0.1 nflximg.net
+127.0.0.1 nflxvideo.net
+
+##########################################
+# AMAZON PRIME VIDEO
+##########################################
+127.0.0.1 primevideo.com
+127.0.0.1 www.primevideo.com
+127.0.0.1 atv-ext.amazon.com
+127.0.0.1 fls-na.amazon.com
+127.0.0.1 media-amazon.com
+127.0.0.1 amazonvideo.com
+
+##########################################
+# DISNEY+
+##########################################
+127.0.0.1 disneyplus.com
+127.0.0.1 www.disneyplus.com
+127.0.0.1 bamgrid.com
+127.0.0.1 cdn.registerdisney.go.com
+127.0.0.1 disney.demdex.net
+
+##########################################
+# HBO MAX / MAX
+##########################################
+127.0.0.1 hbomax.com
+127.0.0.1 www.hbomax.com
+127.0.0.1 play.hbomax.com
+127.0.0.1 max.com
+127.0.0.1 www.max.com
+
+##########################################
+# HULU
+##########################################
+127.0.0.1 hulu.com
+127.0.0.1 www.hulu.com
+127.0.0.1 cdn.hulu.com
+
+##########################################
+# APPLE TV+
+##########################################
+127.0.0.1 tv.apple.com
+127.0.0.1 itunes.apple.com
+127.0.0.1 vod-apple.com
+
+##########################################
+# SPOTIFY
+##########################################
+127.0.0.1 spotify.com
+127.0.0.1 www.spotify.com
+127.0.0.1 api.spotify.com
+127.0.0.1 audio-ak.spotifycdn.com
+127.0.0.1 heads-ak.spotifycdn.net
+
+##########################################
+# DEEZER
+##########################################
+127.0.0.1 deezer.com
+127.0.0.1 www.deezer.com
+127.0.0.1 api.deezer.com
+127.0.0.1 cdn.deezer.com
+
+##########################################
+# YOUTUBE
+##########################################
+127.0.0.1 youtube.com
+127.0.0.1 www.youtube.com
+127.0.0.1 m.youtube.com
+127.0.0.1 youtubei.googleapis.com
+127.0.0.1 ytimg.com
+127.0.0.1 i.ytimg.com
+127.0.0.1 s.ytimg.com
+127.0.0.1 yt3.ggpht.com
+
+##########################################
+# TWITCH
+##########################################
+127.0.0.1 twitch.tv
+127.0.0.1 www.twitch.tv
+127.0.0.1 player.twitch.tv
+127.0.0.1 static.twitchcdn.net
+127.0.0.1 video-edge.twitch.tv

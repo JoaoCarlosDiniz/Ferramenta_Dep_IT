@@ -13,8 +13,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Requisitos\RedesSociais.txt" />
+    <None Remove="Requisitos\Streaming.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Imgs\app_icon_chip.ico" />
     <Content Include="Requisitos\dotnet-installer.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Requisitos\RedesSociais.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Requisitos\Origem.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Requisitos\Streaming.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
